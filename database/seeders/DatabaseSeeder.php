@@ -13,6 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         //Chama o UserSeeder
         $this->call(UserSeeder::class);
-        $this->call(CareersSeeder::class);
+        $this->call(CareerSeeder::class);
     }
 }

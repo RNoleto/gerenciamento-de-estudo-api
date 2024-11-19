@@ -15,22 +15,23 @@ class CareerSeeder extends Seeder
     {
         // Lista de carreiras
         $careers = [
-            'Militar',
-            'Administrativa',
-            'Educação',
-            'Magistratura',
-            'Bancária',
-            'Fiscal',
-            'Gestão Pública',
-            'Controle',
-            'Agências Reguladoras',
-            'Jurídica',
+            ['name' => 'Militar', 'icon' => 'material-symbols:military-tech'],
+            ['name' => 'Administrativa', 'icon' => 'wpf:administrator'],
+            ['name' => 'Educação', 'icon' => 'mdi:school'],
+            ['name' => 'Magistratura', 'icon' => 'wpf:administrator'],
+            ['name' => 'Bancária', 'icon' => 'mdi:bank'],
+            ['name' => 'Fiscal', 'icon' => 'mdi:bank'],
+            ['name' => 'Gestão Pública', 'icon' => 'wpf:administrator'],
+            ['name' => 'Controle', 'icon' => 'wpf:administrator'],
+            ['name' => 'Agências Reguladoras', 'icon' => 'wpf:administrator'],
+            ['name' => 'Jurídica', 'icon' => 'wpf:administrator'],
         ];
 
         // Inserir as carreiras no banco de dados
         foreach ($careers as $career) {
             DB::table('careers')->insert([
-                'name' => $career,
+                'name' => $career['name'],
+                'icon' => $career['icon'], 
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
