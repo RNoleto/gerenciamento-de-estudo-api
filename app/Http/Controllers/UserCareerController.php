@@ -37,6 +37,22 @@ class UserCareerController extends Controller {
         return response()->json(null);
     }
 
+    public function getCareerByUser($user_id)
+    {
+        // Recupera a carreira associada ao usuário, incluindo o nome da carreira
+        $userCareer = UserCareer::where('user_id', $user_id)
+            ->with('career')
+            ->first();
+
+            if($userCareer){
+                return response()->json([
+                    'career_name' => $userCareer->career->name,
+                ]);
+            } else {
+                return response()->json(['message' => 'Carreira não encontrada'], 404);
+            }
+    }
+
     public function destroy($id) {
         $userCareer = UserCareer::findOrFail($id);
 

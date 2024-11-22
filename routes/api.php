@@ -23,4 +23,5 @@ Route::prefix('user-career')->group(function () {
     Route::post('/', [UserCareerController::class, 'store']);
     Route::delete('/{id}', [UserCareerController::class, 'destroy']);
     Route::get('/{userId}', [UserCareerController::class, 'getUserCareer']);
+    Route::get('/career_name/{user_id}', [UserCareerController::class, 'getCareerByUser']);
 });
