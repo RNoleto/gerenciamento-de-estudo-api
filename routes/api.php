@@ -22,5 +22,5 @@ Route::prefix('user-career')->group(function () {
     Route::get('/', [UserCareerController::class, 'index']); // Listar todas as relações
     Route::post('/', [UserCareerController::class, 'store']); // Criar ou atualizar uma relação
     Route::delete('/{id}', [UserCareerController::class, 'destroy']); // Deletar uma relação
-    Route::get('user-career/{userId}', [UserCareerController::class, 'getUserCareer']);// Rota para verificar se o usuário já tem uma carreira atribuída
+    Route::get('/{userId}', [UserCareerController::class, 'getUserCareer']);// Rota para verificar se o usuário já tem uma carreira atribuída
 });
