@@ -3,6 +3,7 @@
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserCareerController;
+use App\Http\Controllers\UserSubjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,4 +25,10 @@ Route::prefix('user-career')->group(function () {
     Route::delete('/{id}', [UserCareerController::class, 'destroy']);
     Route::get('/{userId}', [UserCareerController::class, 'getUserCareer']);
     Route::get('/career_name/{user_id}', [UserCareerController::class, 'getCareerByUser']);
+});
+
+Route::prefix('user-subjects')->group(function () {
+    Route::post('/', [UserSubjectController::class, 'store']);
+    Route::get('/{userId}', [UserSubjectController::class, 'index']);
+    Route::patch('/deactivate', [UserSubjectController::class, 'deactivate']);
 });
