@@ -5,6 +5,7 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserCareerController;
 use App\Http\Controllers\UserSubjectController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserStudyRecordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,4 +32,12 @@ Route::prefix('user-subjects')->group(function () {
     Route::post('/', [UserSubjectController::class, 'store']);
     Route::get('/{userId}', [UserSubjectController::class, 'index']);
     Route::patch('/deactivate', [UserSubjectController::class, 'deactivate']);
+});
+
+Route::prefix('user-study-records')->group(function () {
+    Route::get('/', [UserStudyRecordController::class, 'index'])->name('user-study-records.index');
+    Route::post('/', [UserStudyRecordController::class, 'store'])->name('user-study-records.store');
+    Route::get('/{userStudyRecord}', [UserStudyRecordController::class, 'show'])->name('user-study-records.show');
+    Route::put('/{userStudyRecord}', [UserStudyRecordController::class, 'update'])->name('user-study-records.update');
+    Route::delete('/{userStudyRecord}', [UserStudyRecordController::class, 'destroy'])->name('user-study-records.destroy');
 });
