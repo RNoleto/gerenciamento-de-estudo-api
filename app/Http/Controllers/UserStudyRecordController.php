@@ -47,6 +47,13 @@ class UserStudyRecordController extends Controller {
     public function show(UserStudyRecord $userStudyRecord) {
         return $userStudyRecord->load(['subject']);
     }
+    /**
+     * Display study data for a specified user_id.
+     */
+
+    public function getUserRecords($userId) {
+        return UserStudyRecord::where('user_id', $userId)->with(['subject'])->get();
+    }
 
     /**
      * Show the form for editing the specified resource.

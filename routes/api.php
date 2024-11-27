@@ -37,6 +37,7 @@ Route::prefix('user-subjects')->group(function () {
 Route::prefix('user-study-records')->group(function () {
     Route::get('/', [UserStudyRecordController::class, 'index'])->name('user-study-records.index');
     Route::post('/', [UserStudyRecordController::class, 'store'])->name('user-study-records.store');
+    Route::get('/user/{userId}', [UserStudyRecordController::class, 'getUserRecords'])->name('user-study-records.getUserRecords');
     Route::get('/{userStudyRecord}', [UserStudyRecordController::class, 'show'])->name('user-study-records.show');
     Route::put('/{userStudyRecord}', [UserStudyRecordController::class, 'update'])->name('user-study-records.update');
     Route::delete('/{userStudyRecord}', [UserStudyRecordController::class, 'destroy'])->name('user-study-records.destroy');
