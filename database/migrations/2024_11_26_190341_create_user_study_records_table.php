@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('user_study_records', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id'); // ID do usuário
-            $table->unsignedBigInteger('subject_id'); // ID da matéria
-            $table->string('topic')->nullable(); // Tópico, não obrigatório
-            $table->integer('study_time')->default(0); // Tempo de estudo em minutos
-            $table->integer('total_pauses')->default(0); // Total de pausas
-            $table->integer('questions_resolved')->nullable(); // Questões respondidas
-            $table->integer('correct_answers')->default(0); // Questões corretas
-            $table->integer('incorrect_answers')->default(0); // Questões incorretas
+            $table->string('user_id'); 
+            $table->boolean('ativo')->default(true);
+            $table->unsignedBigInteger('subject_id'); 
+            $table->string('topic')->nullable();
+            $table->integer('study_time')->default(0);
+            $table->integer('total_pauses')->default(0);
+            $table->integer('questions_resolved')->nullable();
+            $table->integer('correct_answers')->default(0);
+            $table->integer('incorrect_answers')->default(0);
 
             $table->timestamps();
 

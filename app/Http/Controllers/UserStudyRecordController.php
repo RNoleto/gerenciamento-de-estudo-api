@@ -85,9 +85,11 @@ class UserStudyRecordController extends Controller {
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UserStudyRecord $userStudyRecord) {
-        $userStudyRecord->delete();
+    public function destroy(UserStudyRecord $userStudyRecord) {       
+        
+        $userStudyRecord->ativo = false;
+        $userStudyRecord->save();
 
-        return response()->json(null, 204);
+        return response()->json(['message' => 'Registro de estudo excluído com sucesso!'], 200);
     }
 }
