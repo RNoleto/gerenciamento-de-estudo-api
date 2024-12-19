@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CareerController;
+use App\Http\Controllers\SubjectController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +22,9 @@ Route::get('/', function () {
 Route::get('/itajai', function () {
     return 'Olá rota web';
 });
+
+//Carreiras
+Route::get('/careers', [CareerController::class, 'index']);
+
+//Matérias
+Route::get('/subjects', [SubjectController::class, 'index']);
