@@ -1,5 +1,3 @@
 <?php
 
-// require __DIR__ ."/../../public/index.php";
-
-#Teste Teste
+require __DIR__ ."/../../public/index.php";
