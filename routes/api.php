@@ -42,3 +42,7 @@ Route::prefix('user-study-records')->group(function () {
     Route::put('/{userStudyRecord}', [UserStudyRecordController::class, 'update'])->name('user-study-records.update');
     Route::delete('/{userStudyRecord}', [UserStudyRecordController::class, 'destroy'])->name('user-study-records.destroy');
 });
+
+Route::get('/teste', function () {
+    return 'Olá rota api tese';
+});

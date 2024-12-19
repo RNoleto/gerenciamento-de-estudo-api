@@ -23,6 +23,10 @@ Route::get('/itajai', function () {
     return 'Olá rota web';
 });
 
+Route::get('/teste', function () {
+    return 'Olá rota web tese';
+});
+
 //Carreiras
 Route::get('/careers', [CareerController::class, 'index']);
 
