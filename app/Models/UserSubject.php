@@ -12,11 +12,8 @@ class UserSubject extends Model
     protected $fillable = [
         'user_id',
         'subject_id',
+        'ativo',
     ];
-
-    // protected $casts = [
-    //     'ativo' => 'boolean',
-    // ];
     
 
     public function subject()

@@ -11,16 +11,28 @@ class UserSubjectController extends Controller {
             'user_id' => 'required|string',
             'subject_ids' => 'required|array',
             'subject_ids.*' => 'exists:subjects,id',
+            'subjects_to_deactivate' => 'nullable|array',
+            'subjects_to_deactivate.*' => 'exists:subjects,id',
         ]);
     
         $userId = $request->user_id;
         $subjectIds = $request->subject_ids;
+        $subjectsToDeactivate = $request->input('subjects_to_deactivate', []);
     
         // Ativar ou atualizar matérias
         foreach ($subjectIds as $subjectId) {
             UserSubject::updateOrCreate(
-                ['user_id' => $userId, 'subject_id' => $subjectId]
+                ['user_id' => $userId, 'subject_id' => $subjectId],
+                ['ativo' => 1]
             );
+        }
+
+        //Desativar matérias desmarcadas
+        if(!empty($subjectsToDeactivate)) {
+            UserSubject::where('user_id', $userId)
+                ->whereIn('subject_id', $subjectsToDeactivate)
+                ->where('ativo', 1) //Apenas registros ativos
+                ->update(['ativo' => 0]);
         }
     
         return response()->json(['message' => 'Matérias salvas com sucesso.'], 200);
@@ -28,6 +40,7 @@ class UserSubjectController extends Controller {
 
     public function index($userId) {
         $subjects = UserSubject::where('user_id', $userId)
+            ->where('ativo', 1) //Apenas registros ativos
             ->with('subject')
             ->get();
 
