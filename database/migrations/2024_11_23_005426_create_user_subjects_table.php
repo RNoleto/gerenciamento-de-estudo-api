@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('user_id');
             $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
-            $table->boolean('ativo')->default(true);
+            // $table->boolean('ativo')->default(true);
             $table->timestamps();
 
             $table->unique(['user_id', 'subject_id']);

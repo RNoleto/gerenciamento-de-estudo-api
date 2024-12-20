@@ -11,18 +11,6 @@ class CareerController extends Controller
     public function index()
     {
         return response()->json(Career::all());
-        // $arr = [
-        //     [
-        //         "carreira" => "teste json"
-        //     ],
-        //     [
-        //         "carreira" => "teste json"
-        //     ],
-        //     [
-        //         "carreira" => "teste json"
-        //     ]
-        //     ];
-        //     return response()->json($arr); 
 
     }
 }
