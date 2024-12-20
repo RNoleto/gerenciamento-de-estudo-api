@@ -47,7 +47,7 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',
-            'sslmode' => 'require',
+            'sslmode' => 'prefer',
             'options' => extension_loaded('pdo_pgsql') ? array_filter([
                 PDO::ATTR_PERSISTENT => true,
                 PDO::ATTR_EMULATE_PREPARES => true,

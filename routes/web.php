@@ -26,9 +26,3 @@ Route::get('/itajai', function () {
 Route::get('/teste', function () {
     return 'Olá rota web tese';
 });
-
-//Carreiras
-Route::get('/careers', [CareerController::class, 'index']);
-
-//Matérias
-Route::get('/subjects', [SubjectController::class, 'index']);
