@@ -34,3 +34,15 @@ EXPOSE 80
 
 # Iniciar o Apache
 CMD ["apache2-foreground"]
+
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    libzip-dev \
+    git \
+    unzip \
+    libicu-dev \
+    zlib1g-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd zip pdo pdo_mysql intl
