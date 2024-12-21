@@ -25,6 +25,7 @@ class CareerSeeder extends Seeder
             ['name' => 'Controle', 'icon' => 'wpf:administrator'],
             ['name' => 'Agências Reguladoras', 'icon' => 'wpf:administrator'],
             ['name' => 'Jurídica', 'icon' => 'wpf:administrator'],
+            ['name' => 'Tecnologia', 'icon' => 'wpf:administrator'],
         ];
 
         // Inserir as carreiras no banco de dados
