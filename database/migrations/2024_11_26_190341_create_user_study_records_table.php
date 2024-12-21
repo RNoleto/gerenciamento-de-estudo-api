@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('user_study_records', function (Blueprint $table) {
             $table->id();
             $table->string('user_id'); 
-            $table->boolean('ativo')->default(true);
+            $table->integer('ativo')->detault(1);
             $table->unsignedBigInteger('subject_id'); 
             $table->string('topic')->nullable();
             $table->integer('study_time')->default(0);

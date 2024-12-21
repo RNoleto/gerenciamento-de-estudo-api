@@ -34,7 +34,13 @@ class UserStudyRecordController extends Controller {
             'questions_resolved' => 'nullable|integer|min:0',
             'correct_answers' => 'required|integer|min:0',
             'incorrect_answers' => 'required|integer|min:0',
+            'ativo' => 'nullable|integer|min:0|max:1',
         ]);
+
+        // Definindo o valor padrão de 'ativo' como 1 se não for fornecido
+        if (!isset($validated['ativo'])) {
+            $validated['ativo'] = 1;
+        }
 
         $record = UserStudyRecord::create($validated);
 
@@ -52,7 +58,10 @@ class UserStudyRecordController extends Controller {
      */
 
     public function getUserRecords($userId) {
-        return UserStudyRecord::where('user_id', $userId)->with(['subject'])->get();
+        return UserStudyRecord::where('user_id', $userId)
+        ->where('ativo', 1)
+        ->with(['subject'])
+        ->get();
     }
 
     /**
@@ -74,12 +83,18 @@ class UserStudyRecordController extends Controller {
             'total_pauses' => 'required|integer',
             'questions_resolved' => 'nullable|integer',
             'correct_answers' => 'required|integer',
-            'incorrect_answers' => 'required|integer'
+            'incorrect_answers' => 'required|integer',
+            'ativo' => 'nullable|integer|min:0|max:1',
         ]);
+
+        // Definindo o valor padrão de 'ativo' como 1 se não for fornecido
+        if (!isset($validated['ativo'])) {
+            $validated['ativo'] = 1;
+        }
 
         $userStudyRecord->update($validated);
 
-        return response()->json($userStudyRecord);
+        return response()->json($userStudyRecord, 200);
     }
 
     /**
@@ -87,7 +102,7 @@ class UserStudyRecordController extends Controller {
      */
     public function destroy(UserStudyRecord $userStudyRecord) {       
         
-        $userStudyRecord->ativo = false;
+        $userStudyRecord->ativo = 0;
         $userStudyRecord->save();
 
         return response()->json(['message' => 'Registro de estudo excluído com sucesso!'], 200);

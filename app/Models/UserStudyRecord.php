@@ -18,6 +18,7 @@ class UserStudyRecord extends Model
         'questions_resolved',
         'correct_answers',
         'incorrect_answers',
+        'ativo',
     ];
 
     // Relação com a matéria

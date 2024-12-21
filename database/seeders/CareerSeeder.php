@@ -26,6 +26,19 @@ class CareerSeeder extends Seeder
             ['name' => 'Agências Reguladoras', 'icon' => 'wpf:administrator'],
             ['name' => 'Jurídica', 'icon' => 'wpf:administrator'],
             ['name' => 'Tecnologia', 'icon' => 'wpf:administrator'],
+            ['name' => 'Saúde', 'icon' => 'mdi:medical-bag'],
+            ['name' => 'Segurança Pública', 'icon' => 'mdi:shield-account'],
+            ['name' => 'Engenharia', 'icon' => 'mdi:engine'],
+            ['name' => 'Comunicação', 'icon' => 'mdi:comment-account'],
+            ['name' => 'Cultura', 'icon' => 'mdi:palette'],
+            ['name' => 'Meio Ambiente', 'icon' => 'mdi:tree'],
+            ['name' => 'Transportes', 'icon' => 'mdi:bus'],
+            ['name' => 'Agricultura', 'icon' => 'mdi:tractor'],
+            ['name' => 'Ciências Sociais', 'icon' => 'mdi:account-group'],
+            ['name' => 'Economia', 'icon' => 'mdi:currency-usd'],
+            ['name' => 'Recursos Humanos', 'icon' => 'mdi:account-multiple'],
+            ['name' => 'Arquitetura', 'icon' => 'mdi:city'],
+            ['name' => 'Turismo', 'icon' => 'mdi:airplane'],
         ];
 
         // Inserir as carreiras no banco de dados
