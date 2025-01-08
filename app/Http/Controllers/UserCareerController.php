@@ -34,7 +34,7 @@ class UserCareerController extends Controller {
             return response()->json($userCareer);
         }
 
-        return response()->json(null);
+        return response()->json(['id' => 0, 'career' => null]);
     }
 
     public function getCareerByUser($user_id)
@@ -46,7 +46,7 @@ class UserCareerController extends Controller {
 
             if($userCareer){
                 return response()->json([
-                    'career_name' => $userCareer->career->name,
+                    'career_name' => $userCareer->career ? $userCareer->career->name : null,
                 ]);
             } else {
                 return response()->json(['message' => 'Carreira não encontrada'], 404);
