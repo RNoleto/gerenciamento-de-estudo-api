@@ -16,7 +16,10 @@ use Illuminate\Support\Facades\Route;
 //Usuarios
 Route::get('/users', [UserController::class, 'index']);
 //Carreiras
-Route::get('/careers', [CareerController::class, 'index']);
+// Route::get('/careers', [CareerController::class, 'index']);
+Route::get('/careers', [CareerController::class, 'index'])->middleware('auth:sanctum')->onError(function () {
+    return response()->json(['message' => 'Erro ao carregar carreiras'], 500);
+});
 //Matérias
 Route::get('/subjects', [SubjectController::class, 'index']);
 //Rotas UserCareer
