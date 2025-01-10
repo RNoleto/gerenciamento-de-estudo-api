@@ -46,3 +46,7 @@ Route::prefix('user-study-records')->group(function () {
 Route::get('/teste', function () {
     return 'Olá rota api tese';
 });
+
+Route::fallback(function () {
+    return response()->json(['message' => 'Not Found'], 404);
+});
