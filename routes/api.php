@@ -44,7 +44,7 @@ Route::prefix('user-study-records')->group(function () {
 });
 
 Route::get('/teste', function () {
-    return 'Olá rota api tese';
+    return 'Olá rota API teste';
 });
 
 Route::fallback(function () {
