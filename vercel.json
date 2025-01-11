@@ -11,8 +11,7 @@
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "false",
-        "APP_URL": "https://yourprojectdomain.com",
-        // "APP_URL": "https://gerenciamento-de-estudo-api.vercel.app",
+        "APP_URL": "https://gerenciamento-de-estudo-api.vercel.app",
         "APP_KEY": "base64:Gtp++4mM/pBqrjMWLFuaGNM1couADk+agN/H7k7nGXI=",
 
         "DB_CONNECTION": "pgsql",
