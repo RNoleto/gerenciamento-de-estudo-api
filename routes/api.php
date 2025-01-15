@@ -9,9 +9,9 @@ use App\Http\Controllers\UserStudyRecordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 //Usuarios
 Route::get('/users', [UserController::class, 'index']);
@@ -44,5 +44,9 @@ Route::prefix('user-study-records')->group(function () {
 });
 
 Route::get('/teste', function () {
-    return 'Olá rota api tese';
+    return 'Olá rota API teste';
+});
+
+Route::fallback(function () {
+    return response()->json(['message' => 'Not Found'], 404);
 });
