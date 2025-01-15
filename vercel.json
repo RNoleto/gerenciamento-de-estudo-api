@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "framework": null,
+      "framework": null,
     "functions": {
         "api/index.php": { "runtime": "vercel-php@0.6.0" }
     },
@@ -10,26 +10,18 @@
     }],
     "env": {
         "APP_ENV": "production",
-        "APP_DEBUG": "false",
-        "APP_URL": "https://gerenciamento-de-estudo-api.vercel.app",
-        "APP_KEY": "base64:Gtp++4mM/pBqrjMWLFuaGNM1couADk+agN/H7k7nGXI=",
-
-        "DB_CONNECTION": "pgsql",
-        "DB_HOST": "your-database-host.us-east-1.postgres.vercel-storage.com",
-        "DB_PORT": "5432",
-        "DB_DATABASE": "verceldb",
-        "DB_USERNAME": "default",
-        "DB_PASSWORD": "endpoint=ep-fancy-rice-########;<password>",
-
+        "APP_DEBUG": "true",
+        "APP_URL": "https://yourprojectdomain.com",
+  
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
         "APP_PACKAGES_CACHE": "/tmp/packages.php",
         "APP_ROUTES_CACHE": "/tmp/routes.php",
         "APP_SERVICES_CACHE": "/tmp/services.php",
         "VIEW_COMPILED_PATH": "/tmp",
-
+  
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie"
     }
-}
+  }
