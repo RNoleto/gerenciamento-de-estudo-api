@@ -47,6 +47,6 @@ Route::get('/teste', function () {
     return 'Olá rota API teste';
 });
 
-Route::fallback(function () {
-    return response()->json(['message' => 'Not Found'], 404);
-});
+// Route::fallback(function () {
+//     return response()->json(['message' => 'Not Found'], 404);
+// });

@@ -45,4 +45,25 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $exception)
+    {
+        // Tratamento para erros 404
+        if($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException){
+            return response()->view('errors.404', [
+                'errorMessage' => 'A página que você está procurando não foi encontrada.',
+                'requestedUrl' => $request->url(),
+            ], 404);
+        }
+
+        // Tratamento para erros 500 (erros de servidor interno)
+        if($this->isHttpException($exception) && $exception->getStatusCode() === 500){
+            return response()->view('errors.500', [
+                'errorMessage' => 'Ocorreu um erro interno no servidor. Por favor, tente novamente mais tarde.',
+            ], 500);
+        }
+
+        // Fallback para outros erros
+        return parent::render($request, $exception);
+    }
 }
