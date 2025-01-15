@@ -15,14 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/itajai', function () {
-    return 'Olá rota web';
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/teste', function () {
-    return 'Olá rota web tese';
+    return 'Olá rota WEB teste';
+});
+
+Route::get('/forcar-erro', function () {
+    abort(500);
 });
