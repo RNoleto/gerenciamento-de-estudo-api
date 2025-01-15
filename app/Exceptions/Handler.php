@@ -56,11 +56,13 @@ class Handler extends ExceptionHandler
             ], 404);
         }
 
-        // Tratamento para erros 500 (erros de servidor interno)
-        if($this->isHttpException($exception) && $exception->getStatusCode() === 500){
-            return response()->view('errors.500', [
-                'errorMessage' => 'Ocorreu um erro interno no servidor. Por favor, tente novamente mais tarde.',
-            ], 500);
+        // Erro 500 (ou outros erros de servidor interno)
+        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
+            if ($exception->getStatusCode() === 500) {
+                return response()->view('errors.500', [
+                    'errorMessage' => 'Ocorreu um erro interno no servidor. Por favor, tente novamente mais tarde.',
+                ], 500);
+            }
         }
 
         // Fallback para outros erros
