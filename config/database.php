@@ -54,7 +54,7 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',
-            'sslmode' => env('DB_SSLMODE', 'prefer'),
+            'sslmode' => env('DB_SSLMODE', 'allow'),
             'options' => extension_loaded('pdo_pgsql') ? [
                 PDO::ATTR_PERSISTENT => true,
                 PDO::ATTR_EMULATE_PREPARES => true,
