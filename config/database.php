@@ -39,24 +39,24 @@ return [
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', 'ep-dawn-union-a4rjc2db-pooler.us-east-1.aws.neon.tech'),
+            'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'verceldb'),
-            'username' => env('DB_USERNAME', 'default'),
-            'password' => env('DB_PASSWORD', 'm3dRkWcA6awp'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',
-            'sslmode' => 'prefer',
-            'options' => extension_loaded('pdo_pgsql') ? array_filter([
+            'sslmode' => env('DB_SSLMODE', 'prefer'),
+            'options' => extension_loaded('pdo_pgsql') ? [
                 PDO::ATTR_PERSISTENT => true,
                 PDO::ATTR_EMULATE_PREPARES => true,
                 PDO::ATTR_STRINGIFY_FETCHES => false,
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_TIMEOUT => 5,
-                'options' => '--endpoint=ep-dawn-union-a4rjc2db',
-            ]) : [],
+                'options' => '--endpoint=ep-cool-smoke-a54is86l',
+            ] : [],
         ],
 
         'sqlsrv' => [
