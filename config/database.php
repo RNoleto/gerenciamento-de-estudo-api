@@ -56,7 +56,6 @@ return [
             'schema' => 'public',
             'sslmode' => env('DB_SSLMODE', 'require'),
             'options' => extension_loaded('pdo_pgsql') ? [
-                PDO::PGSQL_ATTR_SSL_MODE => env('DB_SSLMODE', 'require'),
                 PDO::ATTR_PERSISTENT => true,
                 PDO::ATTR_EMULATE_PREPARES => true,
                 PDO::ATTR_STRINGIFY_FETCHES => false,
