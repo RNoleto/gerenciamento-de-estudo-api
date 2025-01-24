@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/users', [UserController::class, 'index']);
 //Carreiras
 Route::get('/careers', [CareerController::class, 'index']);
-Route::post('/careers-create', [CareerController::class, 'store']);
+Route::post('/careers', [CareerController::class, 'store']);
 //Matérias
 Route::get('/subjects', [SubjectController::class, 'index']);
 //Rotas UserCareer
