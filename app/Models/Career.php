@@ -11,6 +11,12 @@ class Career extends Model
 
     protected $table = 'careers';
 
+    // Adicione os campos que podem ser preenchidos em massa
+    protected $fillable = [
+        'name',
+        'icon',
+    ];
+
     public function UserCareers()
     {
         return $this->hasMany(UserCareer::class, 'career_id');
