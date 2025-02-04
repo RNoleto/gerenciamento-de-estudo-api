@@ -49,6 +49,7 @@ class SubjectSeeder extends Seeder
             'Noções de Direito Financeiro',
             'Noções de Direito Econômico',
             'Noções de Direito Digital',
+            'Direito Tributário',
         ];
 
         // Inserir as matérias no banco de dados
