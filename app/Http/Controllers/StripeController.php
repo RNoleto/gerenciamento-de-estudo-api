@@ -18,6 +18,9 @@ class StripeController extends Controller
     {
         Stripe::setApiKey(config('stripe.sk'));
 
+        $successUrl = env('FRONTEND_SUCCESS_URL');
+        $cancelUrl = env('FRONTEND_CANCEL_URL');
+
         $session = Session::create([
             'line_items' => [
                 [
@@ -32,8 +35,8 @@ class StripeController extends Controller
                 ],
             ],
             'mode' => 'payment',
-            'success_url' => route('success'),
-            'cancel_url' => route('index'),
+            'success_url' => $successUrl . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url'  => $cancelUrl,
         ]);
 
         return response()->json(['url' => $session->url]);
