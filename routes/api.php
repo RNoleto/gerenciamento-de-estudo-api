@@ -58,3 +58,6 @@ Route::get('/teste', function () {
 Route::get('/', [StripeController::class, 'index'])->name('index');
 Route::post('/checkout', [StripeController::class, 'checkout'])->name('checkout');
 Route::get('/success', [StripeController::class, 'success'])->name('success');
+Route::post('/stripe/create-checkout', [StripeController::class, 'createCheckoutSession']);
+Route::get('/stripe/confirm-subscription', [StripeController::class, 'confirmSubscription']);
+Route::post('/stripe/webhook', [StripeController::class, 'handleWebhook']);
