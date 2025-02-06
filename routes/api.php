@@ -55,6 +55,6 @@ Route::get('/teste', function () {
 // });
 
 // Teste de rotas para Stripe
-Route::get('/', [StripeController::class, 'index']);
-Route::post('/checkout', [StripeController::class, 'checkout']);
-Route::get('/success', [StripeController::class, 'success']);
+Route::get('/', [StripeController::class, 'index'])->name('index');
+Route::post('/checkout', [StripeController::class, 'checkout'])->name('checkout');
+Route::get('/success', [StripeController::class, 'success'])->name('success');
