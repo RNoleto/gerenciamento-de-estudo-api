@@ -15,10 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'App\Http\Controllers\Stripecontroller@index')->name('index');
-Route::post('/checkout', 'App\Http\Controllers\Stripecontroller@checkout')->name('checkout');
-Route::get('/success', 'App\Http\Controllers\Stripecontroller@success')->name('success');
-
 Route::get('/teste', function () {
     return 'Olá rota WEB teste';
 });
