@@ -28,6 +28,6 @@ Route::get('/forcar-erro', function () {
     abort(500);
 });
 
-Route::get('/', [StripeController::class, 'index']);
-Route::post('/checkout', [StripeController::class, 'checkout']);
-Route::get('/success', [StripeController::class, 'success']);
+// Route::get('/', [StripeController::class, 'index']);
+// Route::post('/checkout', [StripeController::class, 'checkout']);
+// Route::get('/success', [StripeController::class, 'success']);
