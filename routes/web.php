@@ -3,6 +3,7 @@
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\SubjectController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StripeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +27,7 @@ Route::get('/teste', function () {
 Route::get('/forcar-erro', function () {
     abort(500);
 });
+
+Route::get('/', [StripeController::class, 'index']);
+Route::post('/checkout', [StripeController::class, 'checkout']);
+Route::get('/success', [StripeController::class, 'success']);
