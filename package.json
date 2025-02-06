@@ -2,8 +2,7 @@
     "private": true,
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
-        "vercel-build": "composer install --prefer-dist --no-dev --optimize-autoloader"
+        "build": "vite build"
     },
     "devDependencies": {
         "axios": "^1.1.2",
