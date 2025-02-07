@@ -12,6 +12,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Stripe\Stripe;
 
+
+use Illuminate\Support\Facades\Http;
+use Stripe\Checkout\Session;
+
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
@@ -56,15 +60,56 @@ Route::get('/teste', function () {
 // });
 
 // Teste de rotas para Stripe
-Route::get('/', [StripeController::class, 'index'])->name('index');
-Route::post('/checkout', [StripeController::class, 'checkout'])->name('checkout');
-Route::get('/success', [StripeController::class, 'success'])->name('success');
-Route::post('/stripe/create-checkout', [StripeController::class, 'createCheckoutSession']);
-Route::get('/stripe/confirm-subscription', [StripeController::class, 'confirmSubscription']);
-Route::post('/stripe/webhook', [StripeController::class, 'handleWebhook']);
+// Route::get('/', [StripeController::class, 'index'])->name('index');
+// Route::post('/checkout', [StripeController::class, 'checkout'])->name('checkout');
+// Route::get('/success', [StripeController::class, 'success'])->name('success');
+// Route::post('/stripe/create-checkout', [StripeController::class, 'createCheckoutSession']);
+
+// Route::get('/stripe/confirm-subscription', [StripeController::class, 'confirmSubscription']);
+
+// Route::post('/stripe/webhook', [StripeController::class, 'handleWebhook']);
 
 
 // Rotas para o fluxo de pagamento com Stripe
 Route::post('/stripe/create-checkout', [PaymentController::class, 'createCheckoutSession']);
+
 Route::get('/stripe/confirm-subscription', [PaymentController::class, 'confirmSubscription']);
+
+Route::post('/stripe/webhook', [PaymentController::class, 'confirmSubscription']);
 Route::post('/stripe/webhook', [PaymentController::class, 'handleWebhook']);
+Route::post('/webhook', [PaymentController::class, 'handleWebhook']);
+
+
+
+// Route::post('/stripe/create-checkout-session', function (Request $request) {
+//     // Configurar a chave secreta do Stripe
+//     Stripe::setApiKey(env('STRIPE_SECRET'));
+
+//     // Capturar o ID do usuário Clerk enviado do frontend
+//     $clerkUserId = $request->input('clerk_user_id');
+
+//     if (!$clerkUserId) {
+//         return response()->json(['error' => 'Clerk User ID é obrigatório'], 400);
+//     }
+
+//     try {
+//         // Criar a sessão de checkout no Stripe
+//         $session = Session::create([
+//             'payment_method_types' => ['card'],
+//             'mode' => 'subscription',
+//             'line_items' => [[
+//                 'price' => env('STRIPE_PRICE_ID'), // ID do plano de assinatura no Stripe
+//                 'quantity' => 1,
+//             ]],
+//             'metadata' => [
+//                 'clerk_user_id' => $clerkUserId, // Passando o ID do usuário Clerk
+//             ],
+//             'success_url' => env('FRONTEND_URL') . '/checkout-success?session_id={CHECKOUT_SESSION_ID}',
+//             'cancel_url' => env('FRONTEND_URL') . '/checkout-cancel',
+//         ]);
+
+//         return response()->json(['sessionId' => $session->id]);
+//     } catch (\Exception $e) {
+//         return response()->json(['error' => $e->getMessage()], 500);
+//     }
+// });
