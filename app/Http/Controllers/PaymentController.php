@@ -8,6 +8,7 @@ use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Stripe\Subscription;
 use Illuminate\Support\Facades\Log;
+use Stripe\Webhook;
 
 
 class PaymentController extends Controller {
@@ -77,7 +78,7 @@ class PaymentController extends Controller {
         // Verificar a assinatura do webhook
         try {
             Stripe::setApiKey(env('STRIPE_SK'));
-            $event = \Stripe\Webhook::constructEvent($payload, $sigHeader, $endpointSecret);
+            $event = Webhook::constructEvent($payload, $sigHeader, $endpointSecret);
         } catch (\Exception $e) {
             Log::error('Stripe webhook error: ' . $e->getMessage());
             return response()->json(['error' => 'Invalid webhook signature: ' . $e->getMessage()], 403);
