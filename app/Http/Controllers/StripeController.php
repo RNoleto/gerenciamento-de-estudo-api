@@ -47,8 +47,8 @@ class StripeController extends Controller {
         if (!$clerkUserId) {
             return response()->json(['error' => 'clerk_user_id is required'], 400);
         }
-    
-        Stripe::setApiKey(config('stripe.sk'));
+        
+        Stripe::setApiKey(env('STRIPE_SK'));
     
         $session = Session::create([
             'payment_method_types' => ['card'],
