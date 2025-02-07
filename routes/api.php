@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\StripeController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserCareerController;
 use App\Http\Controllers\UserSubjectController;
@@ -61,3 +62,9 @@ Route::get('/success', [StripeController::class, 'success'])->name('success');
 Route::post('/stripe/create-checkout', [StripeController::class, 'createCheckoutSession']);
 Route::get('/stripe/confirm-subscription', [StripeController::class, 'confirmSubscription']);
 Route::post('/stripe/webhook', [StripeController::class, 'handleWebhook']);
+
+
+// Rotas para o fluxo de pagamento com Stripe
+Route::post('/stripe/create-checkout', [PaymentController::class, 'createCheckoutSession']);
+Route::get('/stripe/confirm-subscription', [PaymentController::class, 'confirmSubscription']);
+Route::post('/stripe/webhook', [PaymentController::class, 'handleWebhook']);
