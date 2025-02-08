@@ -311,7 +311,7 @@ class PaymentController extends Controller
             return response()->json(['error' => 'clerk_user_id is required'], 400);
         }
 
-        $clerkApiKey = env('CLERK_SECRET_KEY');
+        $clerkApiKey = env('CLERK_API_KEY');
         $endpoint = "https://api.clerk.dev/v1/users/{$clerkUserId}";
 
         $updateResponse = Http::withHeaders([

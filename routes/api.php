@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CareerController;
+use App\Http\Controllers\ClerkController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SubjectController;
@@ -81,3 +82,4 @@ Route::post('/update-clerk-metadata', [PaymentController::class, 'updateUserMeta
 
 
 //Rota para atualizar usuário no Clerk depois do pagamento
+Route::post('/update-clerk-metadata', [ClerkController::class, 'updateUserMetadata']);
