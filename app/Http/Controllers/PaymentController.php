@@ -21,18 +21,14 @@ class PaymentController extends Controller {
             return response()->json(['error' => 'clerk_user_id is required'], 400);
         }
 
-        // Define a API key do Stripe usando config('stripe.sk') – certifique-se de que ela está definida
-        // Stripe::setApiKey(config('stripe.sk'));
         Stripe::setApiKey(env('STRIPE_SK'));
 
         $successUrl = env('FRONTEND_SUCCESS_URL');
         $cancelUrl  = env('FRONTEND_CANCEL_URL');
 
-        // Logs para confirmar os valores
-        \Log::info('FRONTEND_SUCCESS_URL: ' . $successUrl);
-        \Log::info('FRONTEND_CANCEL_URL: ' . $cancelUrl);
+        Log::info('FRONTEND_SUCCESS_URL: ' . $successUrl);
+        Log::info('FRONTEND_CANCEL_URL: ' . $cancelUrl);
 
-        // Crie a sessão de checkout
         $session = Session::create([
             'payment_method_types' => ['card'],
             'line_items' => [[
@@ -41,7 +37,7 @@ class PaymentController extends Controller {
                     'product_data' => [
                         'name' => 'Plano Premium',
                     ],
-                    'unit_amount' => 1990, // R$19,90 em centavos
+                    'unit_amount' => 1990,
                     'recurring' => [
                         'interval' => 'month',
                     ],
@@ -70,13 +66,42 @@ class PaymentController extends Controller {
      */
     public function confirmSubscription(Request $request)
 {
-    // Se for um GET, provavelmente é o redirecionamento do usuário (não contém o cabeçalho)
+    // Se for GET (redirecionamento do usuário após o checkout)
     if ($request->isMethod('get')) {
-        // Aqui você pode buscar os dados atualizados (por exemplo, chamar o Clerk ou apenas exibir uma mensagem)
-        return response()->json(['message' => 'Redirecionamento confirmado.'], 200);
+        $sessionId = $request->query('session_id');
+        if (!$sessionId) {
+            return response()->json(['error' => 'Session ID is required'], 400);
+        }
+
+        // Recupera a sessão de checkout do Stripe
+        Stripe::setApiKey(env('STRIPE_SK'));
+        $session = Session::retrieve($sessionId);
+        if (!$session || $session->payment_status !== 'paid') {
+            return response()->json(['error' => 'Payment not completed or invalid session'], 400);
+        }
+
+        // Extraia os dados necessários da sessão
+        $stripeCustomerId = $session->customer;            // Exemplo: "cus_Rjh7M4nuTCxYAy"
+        $stripeSubscriptionId = $session->subscription;      // Exemplo: "sub_1QqDjRGA18YtxvXDhk2r2R3v"
+        // O clerk_user_id está presente nos metadados da sessão
+        $clerkUserId = $session->metadata->clerk_user_id ?? null;
+
+        // NÃO atualizamos o Clerk; apenas retornamos os valores para debug.
+        return response()->json([
+            'message' => 'Redirecionamento confirmado.',
+            'user' => [
+                'private_metadata' => [
+                    'stripeCustomerId' => $stripeCustomerId,
+                    'stripeSubscriptionId' => $stripeSubscriptionId,
+                ],
+                'public_metadata' => [
+                    'subscriptionPlan' => 'premium'
+                ]
+            ]
+        ], 200);
     }
-    
-    // Se for POST, trata como webhook e valida o cabeçalho
+
+    // Se for POST, trata como webhook (código já existente)
     $payload = file_get_contents('php://input');
     $sigHeader = $request->header('Stripe-Signature');
     $endpointSecret = env('STRIPE_WEBHOOK_SECRET');
@@ -94,9 +119,7 @@ class PaymentController extends Controller {
         return response()->json(['error' => 'Invalid webhook signature: ' . $e->getMessage()], 403);
     }
 
-    // Processa o evento (por exemplo, checkout.session.completed)
     if ($event->type === 'checkout.session.completed') {
-        // ... sua lógica para atualizar os dados do usuário no Clerk ...
         return response()->json(['message' => 'Subscription confirmed via webhook'], 200);
     }
 
@@ -181,8 +204,8 @@ class PaymentController extends Controller {
     /**
      * (Opcional) Endpoint para processar webhooks do Stripe.
      */
-    public function handleWebhook(Request $request)
-{
+        public function handleWebhook(Request $request)
+    {
     $payload = file_get_contents('php://input');
     $sigHeader = $request->header('Stripe-Signature');
     $endpointSecret = env('STRIPE_WEBHOOK_SECRET');
@@ -200,11 +223,67 @@ class PaymentController extends Controller {
         return response()->json(['error' => 'Invalid webhook signature: ' . $e->getMessage()], 403);
     }
 
-    // Aqui você processa o evento conforme sua lógica (ex.: atualizar metadados no Clerk)
-    // ...
+    // Caso para o evento de fatura paga
+    if ($event->type === 'invoice.paid') {
+        $invoice = $event->data->object;
+        // O campo "customer" da fatura contém o Stripe Customer ID
+        $stripeCustomerId = $invoice->customer;
+        // O campo "subscription" da fatura contém o Stripe Subscription ID (se aplicável)
+        $stripeSubscriptionId = $invoice->subscription;
+        
+        // Tentativa de extrair o clerk_user_id
+        // Exemplo: supondo que você tenha armazenado o clerk_user_id no metadata de um dos line_items
+        $lineItems = $invoice->lines->data;
+        $clerkUserId = null;
+        if (!empty($lineItems) && isset($lineItems[0]->metadata->clerk_user_id)) {
+            $clerkUserId = $lineItems[0]->metadata->clerk_user_id;
+        }
+        
+        if ($clerkUserId) {
+            $updated = $this->updateClerkUserByIdWithStripeInfo($clerkUserId, $stripeCustomerId, $stripeSubscriptionId);
+            if (!$updated) {
+                Log::error('Falha ao atualizar usuário no Clerk para o clerk_user_id: ' . $clerkUserId);
+            }
+        } else {
+            Log::error('clerk_user_id não encontrado no metadata dos line_items.');
+        }
+    }
+    
+        // Você pode manter outros cases ou retornar sucesso para eventos não tratados
+        return response()->json(['message' => 'Webhook recebido com sucesso']);
+    }
 
-    return response()->json(['message' => 'Webhook recebido com sucesso']);
+    /**
+     * Atualiza o usuário no Clerk utilizando o clerk_user_id e envia os IDs do Stripe.
+     */
+    /**
+ * Atualiza o usuário no Clerk utilizando o clerk_user_id e envia os IDs do Stripe.
+ */
+private function updateClerkUserByIdWithStripeInfo($clerkUserId, $stripeCustomerId, $stripeSubscriptionId)
+{
+    $clerkApiKey = env('CLERK_API_KEY');
+    $endpoint = "https://api.clerk.dev/v1/users/{$clerkUserId}";
+
+    $updateResponse = Http::withHeaders([
+        'Authorization' => "Bearer {$clerkApiKey}",
+        'Content-Type'  => 'application/json',
+    ])->patch($endpoint, [
+        'public_metadata' => ['subscriptionPlan' => 'premium'],
+        'private_metadata' => [
+            'stripeCustomerId' => $stripeCustomerId,
+            'stripeSubscriptionId' => $stripeSubscriptionId,
+        ],
+    ]);
+
+    Log::info('Clerk update response by ID:', [
+        'status' => $updateResponse->status(),
+        'body'   => $updateResponse->body()
+    ]);
+
+    return $updateResponse->successful();
 }
+
+
 
 public function confirmRedirect(Request $request)
 {
