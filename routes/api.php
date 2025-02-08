@@ -77,3 +77,7 @@ Route::post('/stripe/webhook', [PaymentController::class, 'confirmSubscription']
 Route::post('/webhook', [PaymentController::class, 'handleWebhook']);
 Route::post('/stripe/webhook', [PaymentController::class, 'handleWebhook']);
 Route::get('/stripe/confirm', [PaymentController::class, 'confirmRedirect']);
+Route::post('/update-clerk-metadata', [PaymentController::class, 'updateUserMetadata']);
+
+
+//Rota para atualizar usuário no Clerk depois do pagamento
