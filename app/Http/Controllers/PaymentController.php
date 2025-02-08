@@ -68,34 +68,41 @@ class PaymentController extends Controller {
     /**
      * Endpoint para confirmar a assinatura (pode ser chamado via redirecionamento ou webhook).
      */
-    public function confirmSubscription(Request $request) {
-        // Obter o payload bruto e a assinatura do header
-        $payload = file_get_contents('php://input'); // Garante que não há alterações no conteúdo
-        // $sigHeader = trim($request->header('Stripe-Signature'));
-        $sigHeader = $request->headers->get('Stripe-Signature'); // Alternativa para acessar o header
-        $endpointSecret = env('STRIPE_WEBHOOK_SECRET');
-
-        Log::info('Stripe Headers:', $request->headers->all());
-        Log::info('Stripe Raw Payload:', ['payload' => $payload]);
-
-        if (!$sigHeader) {
-            Log::error('Stripe-Signature header ausente.');
-            return response()->json(['error' => 'Missing Stripe-Signature header'], 400);
-        }
-
-        try {
-            Stripe::setApiKey(env('STRIPE_SK'));
-            $event = Webhook::constructEvent($payload, $sigHeader, $endpointSecret);
-        } catch (\UnexpectedValueException $e) {
-            Log::error('Stripe webhook error: Payload inválido.');
-            return response()->json(['error' => 'Invalid payload'], 400);
-        } catch (\Stripe\Exception\SignatureVerificationException $e) {
-            Log::error('Stripe webhook error: Assinatura inválida.');
-            return response()->json(['error' => 'Invalid signature'], 403);
-        }
-
-        return response()->json(['message' => 'Webhook recebido com sucesso']);
+    public function confirmSubscription(Request $request)
+{
+    // Se for um GET, provavelmente é o redirecionamento do usuário (não contém o cabeçalho)
+    if ($request->isMethod('get')) {
+        // Aqui você pode buscar os dados atualizados (por exemplo, chamar o Clerk ou apenas exibir uma mensagem)
+        return response()->json(['message' => 'Redirecionamento confirmado.'], 200);
     }
+    
+    // Se for POST, trata como webhook e valida o cabeçalho
+    $payload = file_get_contents('php://input');
+    $sigHeader = $request->header('Stripe-Signature');
+    $endpointSecret = env('STRIPE_WEBHOOK_SECRET');
+
+    if (!$sigHeader) {
+        Log::error('Stripe-Signature header ausente.');
+        return response()->json(['error' => 'Missing Stripe-Signature header'], 400);
+    }
+
+    try {
+        Stripe::setApiKey(env('STRIPE_SK'));
+        $event = \Stripe\Webhook::constructEvent($payload, $sigHeader, $endpointSecret);
+    } catch (\Exception $e) {
+        Log::error('Stripe webhook error: ' . $e->getMessage());
+        return response()->json(['error' => 'Invalid webhook signature: ' . $e->getMessage()], 403);
+    }
+
+    // Processa o evento (por exemplo, checkout.session.completed)
+    if ($event->type === 'checkout.session.completed') {
+        // ... sua lógica para atualizar os dados do usuário no Clerk ...
+        return response()->json(['message' => 'Subscription confirmed via webhook'], 200);
+    }
+
+    return response()->json(['message' => 'Event type not handled'], 200);
+}
+
 
 
     /**
@@ -174,14 +181,38 @@ class PaymentController extends Controller {
     /**
      * (Opcional) Endpoint para processar webhooks do Stripe.
      */
-    public function handleWebhook(Request $request) {
-        \Log::info('Headers recebidos:', $request->headers->all());
-    
-        if (!$request->hasHeader('Stripe-Signature')) {
-            \Log::error('Stripe-Signature header ausente.');
-            return response()->json(['error' => 'Missing Stripe-Signature header'], 400);
-        }
-    
-        return response()->json(['status' => 'success']);
+    public function handleWebhook(Request $request)
+{
+    $payload = file_get_contents('php://input');
+    $sigHeader = $request->header('Stripe-Signature');
+    $endpointSecret = env('STRIPE_WEBHOOK_SECRET');
+
+    if (!$sigHeader) {
+        Log::error('Stripe-Signature header ausente.');
+        return response()->json(['error' => 'Missing Stripe-Signature header'], 400);
     }
+
+    try {
+        Stripe::setApiKey(env('STRIPE_SK'));
+        $event = \Stripe\Webhook::constructEvent($payload, $sigHeader, $endpointSecret);
+    } catch (\Exception $e) {
+        Log::error('Stripe webhook error: ' . $e->getMessage());
+        return response()->json(['error' => 'Invalid webhook signature: ' . $e->getMessage()], 403);
+    }
+
+    // Aqui você processa o evento conforme sua lógica (ex.: atualizar metadados no Clerk)
+    // ...
+
+    return response()->json(['message' => 'Webhook recebido com sucesso']);
+}
+
+public function confirmRedirect(Request $request)
+{
+    // Esse endpoint é chamado via redirecionamento (GET) sem Stripe-Signature
+    // Aqui você pode apenas buscar os dados do usuário atualizados (por exemplo, no Clerk)
+    // ou exibir uma mensagem de sucesso.
+    
+    return response()->json(['message' => 'Pagamento confirmado. Os dados do usuário foram atualizados via webhook.']);
+}
+
 }
