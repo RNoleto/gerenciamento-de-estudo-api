@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Subject extends Model
 {
     protected $fillable = ['name'];
+
+    protected $table = 'subjects';
 }

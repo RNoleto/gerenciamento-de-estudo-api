@@ -17,11 +17,15 @@ class SubjectController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:150'
         ]);
-
-        $userSubject = Subject::updateOrCreate(
-            ['name' => $validated['name']]
-        );
-
-        return response()->json(['message' => 'Matéria criada com sucesso!', 'data' => $userSubject], 200);
+    
+        $userSubject = Subject::create([
+            'name' => $validated['name']
+        ]);
+    
+        return response()->json([
+            'message' => 'Matéria criada com sucesso!',
+            'data' => $userSubject
+        ], 201);
     }
+    
 }

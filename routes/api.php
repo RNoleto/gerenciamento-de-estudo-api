@@ -27,8 +27,8 @@ Route::get('/users', [UserController::class, 'index']);
 Route::get('/careers', [CareerController::class, 'index']);
 Route::post('/careers', [CareerController::class, 'store']);
 //Matérias
-Route::get('/subjects', [SubjectController::class, 'index']);
-Route::post('/subjects', [SubjectController::class, 'store']);
+Route::get('/subjects', [SubjectController::class, 'index'])->name('subjects.index');
+Route::post('/subjects', [SubjectController::class, 'store'])->name('subjects.store');
 //Rotas UserCareer
 Route::prefix('user-career')->group(function () {
     Route::get('/', [UserCareerController::class, 'index']);
