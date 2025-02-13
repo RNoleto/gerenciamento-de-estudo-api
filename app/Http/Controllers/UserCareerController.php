@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\UserCareer;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class UserCareerController extends Controller {
     public function index() {
@@ -13,17 +15,30 @@ class UserCareerController extends Controller {
     }
 
     public function store(Request $request) {
-        $validated = $request->validate([
-            'user_id' => 'required|string|max:255',
-            'career_id' => 'required|exists:careers,id',
-        ]);
+        try{
+            $validated = $request->validate([
+                'user_id' => 'required|string|max:255',
+                'career_id' => 'required|exists:careers,id',
+            ]);
 
-        $userCareer = UserCareer::updateOrCreate(
-            ['user_id' => $validated['user_id']],
-            ['career_id' => $validated['career_id']]
-        );
+            $userCareer = UserCareer::updateOrCreate(
+                ['user_id' => $validated['user_id']],
+                ['career_id' => $validated['career_id']]
+            );
 
-        return response()->json(['message' => 'Carreira atribuída ao usuário com sucesso!', 'data' => $userCareer], 200);
+            return response()->json(['message' => 'Carreira atribuída ao usuário com sucesso!', 'data' => $userCareer], 200);
+
+        }catch(ValidationException $e){
+            return response()->json([
+                'message' => 'Erro de validação!',
+                'errors' => $e->errors()
+            ], 422);
+        }catch(Exception $e){
+            return response()->json([
+                'message' => 'Erro ao atribuir a carreira ao usuário.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     // Verificar se o usuário tem alguma carreira salva
