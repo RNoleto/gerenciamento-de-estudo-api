@@ -9,10 +9,10 @@ use App\Http\Controllers\UserCareerController;
 use App\Http\Controllers\UserSubjectController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserStudyRecordController;
+use App\Http\Controllers\SupportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Stripe\Stripe;
-
 
 use Illuminate\Support\Facades\Http;
 use Stripe\Checkout\Session;
@@ -84,3 +84,7 @@ Route::post('/update-clerk-metadata', [PaymentController::class, 'updateUserMeta
 
 //Rota para atualizar usuário no Clerk depois do pagamento
 Route::post('/update-clerk-metadata', [ClerkController::class, 'updateUserMetadata']);
+
+
+// Rota para enviar e-mail de suporte
+Route::post('/support', [SupportController::class, 'sendSupport'])->name('support.send');
