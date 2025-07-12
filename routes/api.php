@@ -20,6 +20,12 @@ use Stripe\Checkout\Session;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+//Rotas protegidas pelo Firebase Auth
+Route::middleware('firebase.auth')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return response()->json(['uid' => $request->attributes->get('firebase_uid')]);
+    });
+});
 
 //Usuarios
 Route::get('/users', [UserController::class, 'index']);

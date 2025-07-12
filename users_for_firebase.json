@@ -1,0 +1,410 @@
+[
+    {
+        "id": 2,
+        "email": "cfiorimartins@gmail.com",
+        "name": "Caio Fiori Martins",
+        "first_name": "Caio Fiori",
+        "last_name": "Martins",
+        "clerk_id": "user_2zRIUtQAikh5WoFN8GVdKpZkYIP"
+    },
+    {
+        "id": 3,
+        "email": "joao.pachecoetec@gmail.com",
+        "name": "Joao Pedro Medrado Pacheco",
+        "first_name": "Joao Pedro",
+        "last_name": "Medrado Pacheco",
+        "clerk_id": "user_2yS18vz5QxkTRPb2l6MjwRhPO6z"
+    },
+    {
+        "id": 4,
+        "email": "michelsouza.dev@gmail.com",
+        "name": "Michel Souza",
+        "first_name": "Michel",
+        "last_name": "Souza",
+        "clerk_id": "user_2yQW1StbIwM80M73D24OQTA5Lnw"
+    },
+    {
+        "id": 5,
+        "email": "rafaelbueno438@gmail.com",
+        "name": "Rafael",
+        "first_name": "Rafael",
+        "last_name": null,
+        "clerk_id": "user_2wa3QbWBOD4VdSf6npWjYWhVbeF"
+    },
+    {
+        "id": 6,
+        "email": "allison.rcw@gmail.com",
+        "name": "Roberto",
+        "first_name": "Roberto",
+        "last_name": null,
+        "clerk_id": "user_2w8H4x4YNRDHTuHPDPfEgck5gsL"
+    },
+    {
+        "id": 7,
+        "email": "joaoemanuelvmaia@gmail.com",
+        "name": "Jo\u00e3o Emanuel Veloso Maia",
+        "first_name": "Jo\u00e3o Emanuel",
+        "last_name": "Veloso Maia",
+        "clerk_id": "user_2w842m2HFUTMeqfS35VjO9XJmDH"
+    },
+    {
+        "id": 8,
+        "email": "teteurochamachado@gmail.com",
+        "name": "Matheus Trinta",
+        "first_name": "Matheus",
+        "last_name": "Trinta",
+        "clerk_id": "user_2w67GnlV889xEHfFNiYaBEvRpBH"
+    },
+    {
+        "id": 9,
+        "email": "noticiasanimes12@gmail.com",
+        "name": "Nerd Titan",
+        "first_name": "Nerd",
+        "last_name": "Titan",
+        "clerk_id": "user_2vu8SlcndkLrfKQRnl1NXRqz6Wx"
+    },
+    {
+        "id": 10,
+        "email": "pliniomikael@gmail.com",
+        "name": "Plinio Mikael",
+        "first_name": "Plinio",
+        "last_name": "Mikael",
+        "clerk_id": "user_2vmq4lNW7knbZ8tqO6lWZpcQZwt"
+    },
+    {
+        "id": 11,
+        "email": "robaertlucas@gmail.com",
+        "name": "Lucas Robaert Pereira",
+        "first_name": "Lucas",
+        "last_name": "Robaert Pereira",
+        "clerk_id": "user_2vmbemlrzAiICWz3LGT6JZPJD2f"
+    },
+    {
+        "id": 12,
+        "email": "phaellanderson09@gmail.com",
+        "name": "Anderson Raphael Ferreira",
+        "first_name": "Anderson Raphael",
+        "last_name": "Ferreira",
+        "clerk_id": "user_2vjIzPz0QSFbvc6OHmciWmY5WLd"
+    },
+    {
+        "id": 13,
+        "email": "hermessantos995@gmail.com",
+        "name": "Hermes Santos",
+        "first_name": "Hermes",
+        "last_name": "Santos",
+        "clerk_id": "user_2vj7NuFpijirULn8sGca3jdwwCO"
+    },
+    {
+        "id": 14,
+        "email": "wefabim513@naobk.com",
+        "name": "",
+        "first_name": null,
+        "last_name": null,
+        "clerk_id": "user_2vhkeTtPu8dzQTvg1sbgWk1ZHL3"
+    },
+    {
+        "id": 15,
+        "email": "gitiga4195@ovobri.com",
+        "name": "",
+        "first_name": null,
+        "last_name": null,
+        "clerk_id": "user_2vhM1gIQKAGs730Tun6mTtznMEA"
+    },
+    {
+        "id": 16,
+        "email": "souza.marcosv2@gmail.com",
+        "name": "Marcos Vinicius",
+        "first_name": "Marcos",
+        "last_name": "Vinicius",
+        "clerk_id": "user_2velgvOlDwPsjJh2SxVYEktf2iw"
+    },
+    {
+        "id": 17,
+        "email": "vgs.segundo@gmail.com",
+        "name": "Vin\u00edcius G. S.",
+        "first_name": "Vin\u00edcius",
+        "last_name": "G. S.",
+        "clerk_id": "user_2veQTzpPBkrXdraH80uAU0I6NkP"
+    },
+    {
+        "id": 18,
+        "email": "nikkito125@gmail.com",
+        "name": "Gaara of Water",
+        "first_name": "Gaara",
+        "last_name": "of Water",
+        "clerk_id": "user_2veFfsMrBsEKgI4D5nMZYxDirpJ"
+    },
+    {
+        "id": 19,
+        "email": "leandrohmirandacontato@gmail.com",
+        "name": "Leandro Miranda",
+        "first_name": "Leandro",
+        "last_name": "Miranda",
+        "clerk_id": "user_2veB79ex49m72I7dFyWHaUhkAmv"
+    },
+    {
+        "id": 20,
+        "email": "netosecundario@gmail.com",
+        "name": "Antonio Neto",
+        "first_name": "Antonio",
+        "last_name": "Neto",
+        "clerk_id": "user_2ve5P1uje7YMcRY4UviiktePAkH"
+    },
+    {
+        "id": 21,
+        "email": "henrykaua21@gmail.com",
+        "name": "Henry Kau\u00e3",
+        "first_name": "Henry",
+        "last_name": "Kau\u00e3",
+        "clerk_id": "user_2vdvCkDmH78FK0Fb4CkGSzhnPT7"
+    },
+    {
+        "id": 22,
+        "email": "xmass@tuamaeaquelaursa.com",
+        "name": "",
+        "first_name": null,
+        "last_name": null,
+        "clerk_id": "user_2vdj3UZwyrVzUPk8HTrzgaeNAHf"
+    },
+    {
+        "id": 23,
+        "email": "unimonteslucas@gmail.com",
+        "name": "Lucas Mendes Fagundes",
+        "first_name": "Lucas",
+        "last_name": "Mendes Fagundes",
+        "clerk_id": "user_2vb8mLZ4BeThf21bV58lNWiShYx"
+    },
+    {
+        "id": 24,
+        "email": "carvalho21almeida@gmail.com",
+        "name": "Lucas Carvalho",
+        "first_name": "Lucas",
+        "last_name": "Carvalho",
+        "clerk_id": "user_2vYS7N12SBy0s8UWpXcshUi0KGr"
+    },
+    {
+        "id": 25,
+        "email": "emmanuelnoleto@gmail.com",
+        "name": "emmanuel noleto",
+        "first_name": "emmanuel",
+        "last_name": "noleto",
+        "clerk_id": "user_2vY5AsP6KpL49v8y2WCFhjTFBeC"
+    },
+    {
+        "id": 26,
+        "email": "gustavoroldao90@gmail.com",
+        "name": "Gustavo",
+        "first_name": "Gustavo",
+        "last_name": null,
+        "clerk_id": "user_2vVo7q4iGfYkz2SCBYR19YaIBOA"
+    },
+    {
+        "id": 27,
+        "email": "cgsilva.work@gmail.com",
+        "name": "Cau\u00e3 Gabriel",
+        "first_name": "Cau\u00e3",
+        "last_name": "Gabriel",
+        "clerk_id": "user_2vVio4H97lW8qS2xh65DsJZZX9y"
+    },
+    {
+        "id": 28,
+        "email": "aloisio.gomes@gmail.com",
+        "name": "Alo\u00edsio",
+        "first_name": "Alo\u00edsio",
+        "last_name": null,
+        "clerk_id": "user_2um7usUFNR2ZlvJjQ9vILuQpKbn"
+    },
+    {
+        "id": 29,
+        "email": "jeanmoschem10@gmail.com",
+        "name": "jean moschem",
+        "first_name": "jean",
+        "last_name": "moschem",
+        "clerk_id": "user_2ulvQ40qS1OQBkA8LzmuPlYLenx"
+    },
+    {
+        "id": 30,
+        "email": "eacampos77@gmail.com",
+        "name": "Evandro Teixeira",
+        "first_name": "Evandro",
+        "last_name": "Teixeira",
+        "clerk_id": "user_2udmrr9vIwG4XOhKgvvX1QFscJF"
+    },
+    {
+        "id": 31,
+        "email": "davitxa@gmail.com",
+        "name": "Davi da Silva Teixeira",
+        "first_name": "Davi",
+        "last_name": "da Silva Teixeira",
+        "clerk_id": "user_2ubSsmgMMLle7Xk1TMm5mE5FsMR"
+    },
+    {
+        "id": 32,
+        "email": "luke1986.1.37@gmail.com",
+        "name": "Luke Sky",
+        "first_name": "Luke",
+        "last_name": "Sky",
+        "clerk_id": "user_2ubSP2iImaIoi1fSD9cFfzlRtI7"
+    },
+    {
+        "id": 33,
+        "email": "thaissproni@hotmail.com",
+        "name": "Tha\u00eds Sproni",
+        "first_name": "Tha\u00eds",
+        "last_name": "Sproni",
+        "clerk_id": "user_2ubSJruLkDYtHGo9XyW3R3DNh0U"
+    },
+    {
+        "id": 34,
+        "email": "falecom.ivapf@gmail.com",
+        "name": "Iva Ferreira",
+        "first_name": "Iva",
+        "last_name": "Ferreira",
+        "clerk_id": "user_2ubQtM1ES1Yi76ZICb0CTPPHpWV"
+    },
+    {
+        "id": 35,
+        "email": "lucasemanuelnobrega@gmail.com",
+        "name": "Lucas",
+        "first_name": "Lucas",
+        "last_name": null,
+        "clerk_id": "user_2ub2g2KQr6EKE96ezCx6F5iDFwd"
+    },
+    {
+        "id": 36,
+        "email": "jafiscall@gmail.com",
+        "name": "Fiscal",
+        "first_name": "Fiscal",
+        "last_name": null,
+        "clerk_id": "user_2uROi2rFADhvYTGCw1Ws7AdvoAk"
+    },
+    {
+        "id": 37,
+        "email": "diegomaia05@gmail.com",
+        "name": "Diego Maia",
+        "first_name": "Diego",
+        "last_name": "Maia",
+        "clerk_id": "user_2uMI3O7Cg1dkBZQa7ZGnT3siM8Z"
+    },
+    {
+        "id": 38,
+        "email": "aurifiscal@gmail.com",
+        "name": "Aurilene Fernandes de Almeida",
+        "first_name": "Aurilene",
+        "last_name": "Fernandes de Almeida",
+        "clerk_id": "user_2uJwb4VErrWhZ7TkM1ODyfK8CSa"
+    },
+    {
+        "id": 39,
+        "email": "itl7principal@gmail.com",
+        "name": "Italo Leal",
+        "first_name": "Italo",
+        "last_name": "Leal",
+        "clerk_id": "user_2uJuNRx2OXjo6YdilU7O2JzLO2O"
+    },
+    {
+        "id": 40,
+        "email": "igorsc94@gmail.com",
+        "name": "Igor Santos",
+        "first_name": "Igor",
+        "last_name": "Santos",
+        "clerk_id": "user_2uJqv87rcHFR0kTXXXKSSGqjzmC"
+    },
+    {
+        "id": 41,
+        "email": "itacajueiro@gmail.com",
+        "name": "Ita Cajueiro",
+        "first_name": "Ita",
+        "last_name": "Cajueiro",
+        "clerk_id": "user_2uHEFFqWxCli23UxtWj49YEPSAF"
+    },
+    {
+        "id": 42,
+        "email": "rayllan.infosec@gmail.com",
+        "name": "Rayllan Leit\u00e3o",
+        "first_name": "Rayllan",
+        "last_name": "Leit\u00e3o",
+        "clerk_id": "user_2uGK1PrIB07VcE23eegiArS4Ovr"
+    },
+    {
+        "id": 43,
+        "email": "ak006940@cfjl.com.br",
+        "name": "Arthur Gabriel Kleinpaul",
+        "first_name": "Arthur Gabriel",
+        "last_name": "Kleinpaul",
+        "clerk_id": "user_2uEvZbCN0wvFrWzDb5HFgk73bNq"
+    },
+    {
+        "id": 44,
+        "email": "contato@arthuraraujo.com.br",
+        "name": "Arthur Ara\u00fajo",
+        "first_name": "Arthur",
+        "last_name": "Ara\u00fajo",
+        "clerk_id": "user_2uEiqjXVeZlEl8Pvu9SwJJPlym9"
+    },
+    {
+        "id": 45,
+        "email": "ichigobybleach@gmail.com",
+        "name": "Hermes Santos",
+        "first_name": "Hermes",
+        "last_name": "Santos",
+        "clerk_id": "user_2u80iIpuUuZLkisMhcgbkErl2Zj"
+    },
+    {
+        "id": 46,
+        "email": "teixeira_wifi@hotmail.com",
+        "name": "",
+        "first_name": null,
+        "last_name": null,
+        "clerk_id": "user_2sORpRYT3VJHUXlaNuUnYeOgNEL"
+    },
+    {
+        "id": 47,
+        "email": "jaummiguels2@gmail.com",
+        "name": "Jo\u00e3o Miguel Mendon\u00e7a",
+        "first_name": "Jo\u00e3o Miguel",
+        "last_name": "Mendon\u00e7a",
+        "clerk_id": "user_2sKX6GZmLfc2cDja1TLTiA4oPJZ"
+    },
+    {
+        "id": 48,
+        "email": "matheusaveirofagundes@gmail.com",
+        "name": "Matheus Aveiro",
+        "first_name": "Matheus",
+        "last_name": "Aveiro",
+        "clerk_id": "user_2rtPWh08IE9NnSSIWIrBDYNVBzs"
+    },
+    {
+        "id": 49,
+        "email": "r2noleto@gmail.com",
+        "name": "Ramon Noleto",
+        "first_name": "Ramon",
+        "last_name": "Noleto",
+        "clerk_id": "user_2qoWYpkBKLvCbAphvk2CrCWAbcE"
+    },
+    {
+        "id": 50,
+        "email": "flavibar56@gmail.com",
+        "name": "Fl\u00e1via Barbosa",
+        "first_name": "Fl\u00e1via",
+        "last_name": "Barbosa",
+        "clerk_id": "user_2qPPwx77xJVV6ug2LKrwJSOvczN"
+    },
+    {
+        "id": 51,
+        "email": "devnoleto@gmail.com",
+        "name": "Ramon Noleto",
+        "first_name": "Ramon",
+        "last_name": "Noleto",
+        "clerk_id": "user_2pAdCB9zkWnXb2DqTtxG2S5eCyc"
+    },
+    {
+        "id": 52,
+        "email": "zapinguim@gmail.com",
+        "name": "Ramon Noleto",
+        "first_name": "Ramon",
+        "last_name": "Noleto",
+        "clerk_id": "user_2p5U0SImbACqrHTEigqPsNexBi7"
+    }
+]
