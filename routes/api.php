@@ -10,6 +10,7 @@ use App\Http\Controllers\UserSubjectController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserStudyRecordController;
 use App\Http\Controllers\SupportController;
+use App\Http\Controllers\ScheduleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Stripe\Stripe;
@@ -20,6 +21,7 @@ use Stripe\Checkout\Session;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+
 //Rotas protegidas pelo Firebase Auth
 Route::middleware('firebase.auth')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -29,12 +31,15 @@ Route::middleware('firebase.auth')->group(function () {
 
 //Usuarios
 Route::get('/users', [UserController::class, 'index']);
+
 //Carreiras
 Route::get('/careers', [CareerController::class, 'index']);
 Route::post('/careers', [CareerController::class, 'store']);
+
 //Matérias
 Route::get('/subjects', [SubjectController::class, 'index'])->name('subjects.index');
 Route::post('/subjects', [SubjectController::class, 'store'])->name('subjects.store');
+
 //Rotas UserCareer
 Route::prefix('user-career')->group(function () {
     Route::get('/', [UserCareerController::class, 'index']);
@@ -58,6 +63,10 @@ Route::prefix('user-study-records')->group(function () {
     Route::put('/{userStudyRecord}', [UserStudyRecordController::class, 'update'])->name('user-study-records.update');
     Route::delete('/{userStudyRecord}', [UserStudyRecordController::class, 'destroy'])->name('user-study-records.destroy');
 });
+
+//cronograma
+Route::get('/schedule/{userId}', [ScheduleController::class, 'getSchedule']);
+Route::post('/schedule', [ScheduleController::class, 'saveSchedule']);
 
 Route::get('/teste', function () {
     return 'Olá rota API teste';
