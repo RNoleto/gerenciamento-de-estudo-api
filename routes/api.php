@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserStudyRecordController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\DailyProgressController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Stripe\Stripe;
@@ -68,9 +69,14 @@ Route::prefix('user-study-records')->group(function () {
 Route::get('/schedule/{userId}', [ScheduleController::class, 'getSchedule']);
 Route::post('/schedule', [ScheduleController::class, 'saveSchedule']);
 
-Route::get('/teste', function () {
-    return 'Olá rota API teste';
-});
+//Progresso Diário --> usado junto com o Cronograma
+Route::get('/progress/{userId}', [DailyProgressController::class, 'getProgressForDate']);
+Route::post('/progress/toggle', [DailyProgressController::class, 'toggleProgress']);
+Route::post('/progress/sync', [DailyProgressController::class, 'syncProgress']);
+
+// Route::get('/teste', function () {
+//     return 'Olá rota API teste';
+// });
 
 // Route::fallback(function () {
 //     return response()->json(['message' => 'Not Found'], 404);
