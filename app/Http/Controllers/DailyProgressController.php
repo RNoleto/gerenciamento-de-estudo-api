@@ -11,14 +11,17 @@ class DailyProgressController extends Controller
 {
     public function getProgressForDate(Request $request, $userId)
     {
+        // Valida se as datas de início e fim foram enviadas
         $validated = $request->validate([
-            'date' => 'required|date_format:Y-m-d',
+            'startDate' => 'required|date_format:Y-m-d',
+            'endDate' => 'required|date_format:Y-m-d',
         ]);
-
+    
         $progress = DailyProgress::where('user_id', $userId)
-            ->where('completion_date', $validated['date'])
-            ->get(['schedule_item_id']);
-            
+            // [MUDANÇA] Usa 'whereBetween' para buscar em um intervalo
+            ->whereBetween('completion_date', [$validated['startDate'], $validated['endDate']])
+            ->get(); // Retorna o objeto completo, incluindo a data
+    
         return response()->json($progress);
     }
 
