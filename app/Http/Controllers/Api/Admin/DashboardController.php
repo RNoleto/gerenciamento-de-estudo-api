@@ -28,6 +28,7 @@ class DashboardController extends Controller
     public function getStudySessionsChartData()
     {
         $records = UserStudyRecord::query()
+            ->where('ativo', 1)
             ->select(
                 DB::raw('DATE(created_at) as date'),
                 DB::raw('COUNT(*) as sessions_count'),
