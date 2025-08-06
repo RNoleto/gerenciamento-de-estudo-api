@@ -35,6 +35,7 @@ Route::middleware('firebase.auth')->group(function () {
 Route::prefix('admin')->group(function () {
     Route::get('/stats', [DashboardController::class, 'getStats']);
     Route::get('/charts/study-sessions', [DashboardController::class, 'getStudySessionsChartData']);
+    Route::get('/charts/career-distribution', [DashboardController::class, 'getCareerDistributionChartData']);
 });
 
 //Usuarios

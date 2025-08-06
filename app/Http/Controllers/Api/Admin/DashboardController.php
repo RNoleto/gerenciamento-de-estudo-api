@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Career;
 use App\Models\UserStudyRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -93,6 +94,36 @@ class DashboardController extends Controller
                     'backgroundColor' => 'rgba(249, 115, 22, 0.2)',
                     'tension' => 0.4,
                     'fill' => true,
+                ]
+            ]
+        ]);
+    }
+
+    public function getCareerDistributionChartData()
+    {
+        $careerData = Career::query()
+            ->join('user_career', 'careers.id', '=', 'user_career.career_id')
+            ->select(
+                'careers.name',
+                DB::raw('COUNT(user_career.user_id) as user_count')
+            ) 
+            ->groupBy('careers.name')
+            ->having(DB::raw('COUNT(user_career.user_id)'), '>', 0)
+            ->orderBy(DB::raw('COUNT(user_career.user_id)'), 'desc')
+            ->get();
+
+        $labels = $careerData->pluck('name');
+        $data = $careerData->pluck('user_count');
+
+        return response()->json([
+            'labels' => $labels,
+            'datasets' => [
+                [
+                    'label' => 'Usuários por Carreira',
+                    'data' => $data,
+                    'backgroundColor' => '#10B981',
+                    'borderRadius' => 8,
+                    'barThickness' => 15
                 ]
             ]
         ]);
