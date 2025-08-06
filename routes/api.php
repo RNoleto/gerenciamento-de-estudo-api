@@ -15,6 +15,7 @@ use App\Http\Controllers\DailyProgressController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Stripe\Stripe;
+use App\Http\Controllers\Api\Admin\DashboardController;
 
 use Illuminate\Support\Facades\Http;
 use Stripe\Checkout\Session;
@@ -32,7 +33,8 @@ Route::middleware('firebase.auth')->group(function () {
 
 //Rotas Administrativas, futuramente proteger com middleware de admin
 Route::prefix('admin')->group(function () {
-    Route::get('/stats', [App\Http\Controllers\Api\Admin\DashboardController::class, 'getStats']);
+    Route::get('/stats', [DashboardController::class, 'getStats']);
+    Route::get('/charts/study-sessions', [DashboardController::class, 'getStudySessionsChartData']);
 });
 
 //Usuarios
