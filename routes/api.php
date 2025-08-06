@@ -29,6 +29,11 @@ Route::middleware('firebase.auth')->group(function () {
     });
 });
 
+//Rotas Administrativas, futuramente proteger com middleware de admin
+Route::prefix('admin')->group(function () {
+    Route::get('/stats', [App\Http\Controllers\Api\Admin\DashboardController::class, 'getStats']);
+});
+
 //Usuarios
 Route::get('/users', [UserController::class, 'index']);
 

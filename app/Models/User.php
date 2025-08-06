@@ -22,6 +22,8 @@ class User extends Authenticatable
         'email',
         'password',
         'clerk_id',
+        'firebase_uid',
+        'clerkfire_id',
         'first_name',
         'last_name',
         'user_since',
