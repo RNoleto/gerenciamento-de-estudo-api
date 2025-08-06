@@ -27,20 +27,19 @@ class DashboardController extends Controller
 
     public function getStudySessionsChartData()
     {
-        // 1. Buscar os dados agrupados dos últimos 7 dias
         $records = UserStudyRecord::query()
             ->select(
                 DB::raw('DATE(created_at) as date'),
                 DB::raw('COUNT(*) as sessions_count'),
-                DB::raw('SUM(questions_resolved) as questions_sum')
+                DB::raw('COALESCE(SUM(questions_resolved), 0) as questions_sum'),
+                DB::raw('COALESCE(SUM(study_time), 0) as total_study_time_seconds')
             )
-            ->where('created_at', '>=', now()->subDays(6)->startOfDay()) // Últimos 7 dias incluindo hoje
+            ->where('created_at', '>=', now()->subDays(6)->startOfDay())
             ->groupBy('date')
             ->orderBy('date', 'asc')
             ->get()
-            ->keyBy('date'); // Transforma a collection em um array associativo pela data
+            ->keyBy('date');
 
-        // 2. Criar um array com todos os dias do período (para não ter buracos)
         $period = now()->subDays(6)->startOfDay()->toPeriod(now()->endOfDay());
         $chartData = [];
 
@@ -49,22 +48,24 @@ class DashboardController extends Controller
             $chartData[$formattedDate] = [
                 'sessions_count' => $records[$formattedDate]->sessions_count ?? 0,
                 'questions_sum' => $records[$formattedDate]->questions_sum ?? 0,
+                'total_study_time_seconds' => $records[$formattedDate]->total_study_time_seconds ?? 0,
             ];
         }
         
-        // 3. Formatar os dados para a estrutura que o Chart.js espera
         $labels = [];
         $sessionsData = [];
         $questionsData = [];
+        $studyHoursData = [];
 
         foreach ($chartData as $date => $data) {
-            // Formata o label para '05 Ago'
             $labels[] = Carbon::parse($date)->translatedFormat('d M');
             $sessionsData[] = $data['sessions_count'];
             $questionsData[] = $data['questions_sum'];
+            
+            $hours = round($data['total_study_time_seconds'] / 3600, 2);
+            $studyHoursData[] = $hours;
         }
 
-        // 4. Retornar o JSON final
         return response()->json([
             'labels' => $labels,
             'datasets' => [
@@ -81,6 +82,14 @@ class DashboardController extends Controller
                     'data' => $questionsData,
                     'borderColor' => '#20B2AA',
                     'backgroundColor' => 'rgba(32, 178, 170, 0.2)',
+                    'tension' => 0.4,
+                    'fill' => true,
+                ],
+                [
+                    'label' => 'Horas Estudadas',
+                    'data' => $studyHoursData,
+                    'borderColor' => '#F97316',
+                    'backgroundColor' => 'rgba(249, 115, 22, 0.2)',
                     'tension' => 0.4,
                     'fill' => true,
                 ]

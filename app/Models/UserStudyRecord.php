@@ -21,6 +21,11 @@ class UserStudyRecord extends Model
         'ativo',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     // Relação com a matéria
     public function subject()
     {
