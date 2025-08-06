@@ -28,7 +28,6 @@ class ScheduleController extends Controller
 
     public function saveSchedule(Request $request)
     {
-        // [MELHORIA] Removi a validação do 'id' temporário do frontend, pois ele não é necessário no backend.
         $validated = $request->validate([
             'user_id' => 'required|string',
             'weeklyPlan' => 'required|array',
@@ -37,20 +36,20 @@ class ScheduleController extends Controller
             'weeklyPlan.*.subjects.*.name' => 'required|string',
             'weeklyPlan.*.subjects.*.subject_id' => 'required|integer|exists:subjects,id',
         ]);
-    
+
         $userId = $validated['user_id'];
         $weeklyPlanData = $validated['weeklyPlan'];
-    
+
         // Usamos uma transação para garantir a consistência dos dados
         DB::transaction(function () use ($userId, $weeklyPlanData) {
-            // [CORREÇÃO] A query de deleção agora usa a comparação de igualdade correta.
+            // Deleta todo o cronograma antigo do usuário.
             ScheduleItem::where('user_id', $userId)->delete();
-        
+
             $dayMap = [
                 'Domingo' => 7, 'Segunda-feira' => 1, 'Terça-feira' => 2,
                 'Quarta-feira' => 3, 'Quinta-feira' => 4, 'Sexta-feira' => 5, 'Sábado' => 6
             ];
-        
+
             // Recria o cronograma a partir dos dados do frontend
             foreach ($weeklyPlanData as $dayData) {
                 if (!empty($dayData['subjects'])) {
@@ -65,7 +64,13 @@ class ScheduleController extends Controller
                 }
             }
         });
-    
-        return response()->json(['message' => 'Cronograma salvo com sucesso!'], 200);
+
+        // [MUDANÇA] Após salvar, busca o cronograma recém-criado para retornar ao frontend
+        $newSchedule = $this->getSchedule($userId)->original;
+
+        return response()->json([
+            'message' => 'Cronograma salvo com sucesso!',
+            'schedule' => $newSchedule // Retorna os dados com os IDs corretos
+        ], 200);
     }
 }
