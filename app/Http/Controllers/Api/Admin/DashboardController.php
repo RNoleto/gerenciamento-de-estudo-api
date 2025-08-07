@@ -19,6 +19,12 @@ class DashboardController extends Controller
         $totalCareers = Career::count();
         $totalSubjects = Subject::count();
 
+        $totalSecondsStudy = UserStudyRecord::where('ativo', 1)->sum('study_time');
+        $hours = floor($totalSecondsStudy / 3600);
+        $remainingSeconds = $totalSecondsStudy % 3600;
+        $minutes = floor($remainingSeconds / 60);
+        $formattedTotalHoursStudy = "{$hours}h {$minutes}min";
+
         $latestUserDate = User::latest('created_at')->value('created_at');
 
         $formattedDate = $latestUserDate ? $latestUserDate->format('d/m/Y'): null;
@@ -28,6 +34,7 @@ class DashboardController extends Controller
             'latestRegistrationDate' => $formattedDate,
             'totalCareers' => $totalCareers,
             'totalSubjects' => $totalSubjects,
+            'totalHoursStudy' => $formattedTotalHoursStudy,
         ]);
     }
 
