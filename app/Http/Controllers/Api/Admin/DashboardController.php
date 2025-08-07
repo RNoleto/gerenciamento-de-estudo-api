@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Career;
+use App\Models\Subject;
 use App\Models\UserStudyRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,8 @@ class DashboardController extends Controller
     public function getStats()
     {
         $totalUsers = User::count();
+        $totalCareers = Career::count();
+        $totalSubjects = Subject::count();
 
         $latestUserDate = User::latest('created_at')->value('created_at');
 
@@ -23,6 +26,8 @@ class DashboardController extends Controller
         return response()->json([
             'totalUsers' => $totalUsers,
             'latestRegistrationDate' => $formattedDate,
+            'totalCareers' => $totalCareers,
+            'totalSubjects' => $totalSubjects,
         ]);
     }
 
@@ -119,7 +124,7 @@ class DashboardController extends Controller
             'labels' => $labels,
             'datasets' => [
                 [
-                    'label' => 'Usuários por Carreira',
+                    'label' => 'Usuários',
                     'data' => $data,
                     'backgroundColor' => '#10B981',
                     'borderRadius' => 8,
