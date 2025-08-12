@@ -37,9 +37,11 @@ Route::prefix('admin')->group(function () {
     Route::get('/charts/study-sessions', [DashboardController::class, 'getStudySessionsChartData']);
     Route::get('/charts/career-distribution', [DashboardController::class, 'getCareerDistributionChartData']);
 });
-
-//Usuarios
+//Usuarios - Rotas para usar em Admin
 Route::get('/users', [UserController::class, 'index']);
+Route::delete('/users/{user}', [UserController::class, 'destroy']);
+Route::get('/users/{user}', [UserController::class, 'show']);
+Route::put('/users/{user}', [UserController::class, 'update']);
 
 //Carreiras
 Route::get('/careers', [CareerController::class, 'index']);
