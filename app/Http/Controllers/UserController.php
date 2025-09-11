@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Models\UserCareer;
 use Illuminate\Http\Request;
+use Kreait\Firebase\Factory;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -62,6 +64,45 @@ class UserController extends Controller
             return response()->json(['message' => 'Usuário deletado com sucesso.'], 200);
         } catch (\Exception $e){
             return response()->json(['error' => 'Ocorreu um erro ao deletar o usuário.'], 500);
+        }
+    }
+
+    /**
+     * Sincroniza o usuário do Firebase com o banco de dados local ao registrar-se.
+     */
+    public function syncOnRegister(Request $request)
+    {
+        $firebaseUid = $request->attributes->get('firebase_uid');
+
+        if (!$firebaseUid) { 
+            return response()->json(['error' => 'Firebase UID não encontrado na requisição.'], 400);
+        }
+
+        try {
+            $factory = (new Factory)->withServiceAccount(config('firebase.credentials'));
+            $auth = $factory->createAuth();
+
+            $firebaseUser = $auth->getUser($firebaseUid);
+
+            $user = User::firstOrCreate(
+                ['firebase_uid' => $firebaseUser->uid],
+                [
+                    'name'              => $firebaseUser->displayName ?? 'Usuário',
+                    'email'             => $firebaseUser->email,
+                    'password'          => bcrypt(Str::random(20)),
+                    'email_verified_at' => $firebaseUser->emailVerified ? now() : null,
+                    'created_at'        => $firebaseUser->metadata->createdAt,
+                    'updated_at'        => now(),
+                ]
+            );
+
+            return response()->json(['message' => 'Usuário sincronizado com sucesso!', 'user' => $user], 201);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Ocorreu um erro ao sincronizar o usuário.',
+                'details' => $e->getMessage(),
+            ], 500);
         }
     }
 }

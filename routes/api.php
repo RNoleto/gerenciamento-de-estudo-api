@@ -37,6 +37,10 @@ Route::prefix('admin')->group(function () {
     Route::get('/charts/study-sessions', [DashboardController::class, 'getStudySessionsChartData']);
     Route::get('/charts/career-distribution', [DashboardController::class, 'getCareerDistributionChartData']);
 });
+
+// Rota para sincronizar usuário no banco de dados local/neon após o registro no Firebase
+Route::post('/users/sync-on-register', [UserController::class, 'syncOnRegister'])->middleware('firebase.auth');
+
 //Usuarios - Rotas para usar em Admin
 Route::get('/users', [UserController::class, 'index']);
 Route::delete('/users/{user}', [UserController::class, 'destroy']);
