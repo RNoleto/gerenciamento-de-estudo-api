@@ -73,31 +73,36 @@ class UserController extends Controller
     public function syncOnRegister(Request $request)
     {
         $firebaseUid = $request->attributes->get('firebase_uid');
-
+    
         if (!$firebaseUid) { 
             return response()->json(['error' => 'Firebase UID não encontrado na requisição.'], 400);
         }
-
+    
         try {
-            $factory = (new Factory)->withServiceAccount(config('firebase.credentials'));
+            $credentials = config('firebase.credentials');
+            if (\Illuminate\Support\Str::startsWith($credentials, '{')) {
+                $factory = (new \Kreait\Firebase\Factory)->withServiceAccount(json_decode($credentials, true));
+            } else {
+                $factory = (new \Kreait\Firebase\Factory)->withServiceAccount($credentials);
+            }
             $auth = $factory->createAuth();
-
+        
             $firebaseUser = $auth->getUser($firebaseUid);
-
+        
             $user = User::firstOrCreate(
                 ['firebase_uid' => $firebaseUser->uid],
                 [
                     'name'              => $firebaseUser->displayName ?? 'Usuário',
                     'email'             => $firebaseUser->email,
-                    'password'          => bcrypt(Str::random(20)),
+                    'password'          => bcrypt(\Illuminate\Support\Str::random(20)),
                     'email_verified_at' => $firebaseUser->emailVerified ? now() : null,
                     'created_at'        => $firebaseUser->metadata->createdAt,
                     'updated_at'        => now(),
                 ]
             );
-
+        
             return response()->json(['message' => 'Usuário sincronizado com sucesso!', 'user' => $user], 201);
-
+        
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Ocorreu um erro ao sincronizar o usuário.',
