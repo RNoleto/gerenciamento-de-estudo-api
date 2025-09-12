@@ -1,1 +1,11 @@
+# Ignorar arquivos de dependência e de sistema
 /vendor
+/node_modules
+/.git
+/.env
+
+# Ignorar arquivos de armazenamento do Laravel que não devem ser públicos
+/storage/*.key
+/storage/framework/sessions/*
+/storage/framework/cache/data/*
+/storage/logs/*.log
