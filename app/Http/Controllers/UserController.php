@@ -68,7 +68,7 @@ class UserController extends Controller
     }
 
     /**
-     * Sincroniza o usuário do Firebase com o banco de dados local ao registrar-se.
+     * Sincroniza o usuário do Firebase com o banco de dados local ao registrar.
      */
     public function syncOnRegister(Request $request)
     {
@@ -79,14 +79,7 @@ class UserController extends Controller
         }
 
         try {
-            $credentials = config('firebase.credentials');
-            if (Str::startsWith($credentials, '{')) {
-                // Se for um JSON direto da env
-                $factory = (new Factory)->withServiceAccount(json_decode($credentials, true));
-            } else {
-                // Se for um caminho para arquivo local
-                $factory = (new Factory)->withServiceAccount($credentials);
-            }
+            $factory = (new Factory)->withServiceAccount(config('firebase.credentials'));
             $auth = $factory->createAuth();
 
             $firebaseUser = $auth->getUser($firebaseUid);
