@@ -79,7 +79,14 @@ class UserController extends Controller
         }
 
         try {
-            $factory = (new Factory)->withServiceAccount(config('firebase.credentials'));
+            $credentials = config('firebase.credentials');
+            if (Str::startsWith($credentials, '{')) {
+                // Se for um JSON direto da env
+                $factory = (new Factory)->withServiceAccount(json_decode($credentials, true));
+            } else {
+                // Se for um caminho para arquivo local
+                $factory = (new Factory)->withServiceAccount($credentials);
+            }
             $auth = $factory->createAuth();
 
             $firebaseUser = $auth->getUser($firebaseUid);
