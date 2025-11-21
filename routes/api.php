@@ -32,6 +32,7 @@ Route::middleware('firebase.auth')->group(function () {
         return response()->json(['uid' => $request->attributes->get('firebase_uid')]);
     });
 });
+Route::get('/user/{firebaseUid}', [UserController::class, 'getUserByFirebaseUid']);
 
 //Rotas Administrativas, futuramente proteger com middleware de admin
 Route::prefix('admin')->group(function () {

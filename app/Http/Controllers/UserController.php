@@ -110,4 +110,14 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    // Pegar dados do usuário pelo Firebase UID
+    public function getUserByFirebaseUid($firebaseUid)
+    {
+        $user = User::where('firebase_uid', $firebaseUid)->first();
+        if (!$user) {
+            return response()->json(['error' => 'Usuário não encontrado.'], 404);
+        }
+        return response()->json($user);
+    }
 }
