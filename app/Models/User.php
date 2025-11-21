@@ -28,6 +28,8 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'user_since',
+        'is_premium',
+        'premium_expires_at',
     ];
 
     /**
@@ -47,6 +49,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_premium' => 'boolean', 
+        'premium_expires_at' => 'datetime',
     ];
 
     public function userCareer()

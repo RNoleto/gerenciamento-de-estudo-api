@@ -12,6 +12,8 @@ use App\Http\Controllers\UserStudyRecordController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\DailyProgressController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\WebhookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Stripe\Stripe;
@@ -115,6 +117,10 @@ Route::post('/webhook', [PaymentController::class, 'handleWebhook']);
 Route::post('/stripe/webhook', [PaymentController::class, 'handleWebhook']);
 Route::get('/stripe/confirm', [PaymentController::class, 'confirmRedirect']);
 Route::post('/update-clerk-metadata', [PaymentController::class, 'updateUserMetadata']);
+
+//Rotas para pagamento com abacatepay
+Route::post('/checkout/abacatepay', [CheckoutController::class, 'createAbacateCheckout']);
+Route::post('/webhooks/abacatepay', [WebhookController::class, 'handleAbacateHook']);
 
 
 //Rota para atualizar usuário no Clerk depois do pagamento
