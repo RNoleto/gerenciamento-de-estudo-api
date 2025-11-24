@@ -35,11 +35,17 @@ class UserStudyRecordController extends Controller {
             'correct_answers' => 'required|integer|min:0',
             'incorrect_answers' => 'required|integer|min:0',
             'ativo' => 'nullable|integer|min:0|max:1',
+            'created_at' => 'nullable|date',
         ]);
 
         // Definindo o valor padrão de 'ativo' como 1 se não for fornecido
         if (!isset($validated['ativo'])) {
             $validated['ativo'] = 1;
+        }
+
+        if ($request->has('created_at') && !empty($request->created_at)) {
+            $validated['created_at'] = \Carbon\Carbon::parse($request->created_at)
+                                        ->setTimezone(config('app.timezone'));
         }
 
         $record = UserStudyRecord::create($validated);

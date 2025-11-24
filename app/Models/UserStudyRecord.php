@@ -19,6 +19,7 @@ class UserStudyRecord extends Model
         'correct_answers',
         'incorrect_answers',
         'ativo',
+        'created_at',
     ];
 
     protected $casts = [
