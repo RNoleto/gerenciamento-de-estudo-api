@@ -31,6 +31,25 @@ Route::middleware('firebase.auth')->group(function () {
     Route::get('/user', function (Request $request) {
         return response()->json(['uid' => $request->attributes->get('firebase_uid')]);
     });
+
+    // =======================================
+    // 1. ROTAS DE ADMINISTRAÇÃO DE USUÁRIOS
+    // =======================================
+    Route::get('/users', [UserController::class, 'index']);
+    Route::delete('/users/{user}', [UserController::class, 'destroy']);
+    Route::get('/users/{user}', [UserController::class, 'show']);
+    Route::put('/users/{user}', [UserController::class, 'update']);
+
+    // =======================================
+    // 2. ROTAS DE USO GERAL USUÁRIOS
+    // =======================================
+    // CARREIRAS
+    Route::get('/careers', [CareerController::class, 'index']);
+    Route::post('/careers', [CareerController::class, 'store']);
+    // MATÉRIAS
+    Route::get('/subjects', [SubjectController::class, 'index'])->name('subjects.index');
+    Route::post('/subjects', [SubjectController::class, 'store'])->name('subjects.store');
+
 });
 Route::get('/user/{firebaseUid}', [UserController::class, 'getUserByFirebaseUid']);
 
@@ -44,19 +63,8 @@ Route::prefix('admin')->group(function () {
 // Rota para sincronizar usuário no banco de dados local/neon após o registro no Firebase
 Route::post('/users/sync-on-register', [UserController::class, 'syncOnRegister'])->middleware('firebase.auth');
 
-//Usuarios - Rotas para usar em Admin
-Route::get('/users', [UserController::class, 'index']);
-Route::delete('/users/{user}', [UserController::class, 'destroy']);
-Route::get('/users/{user}', [UserController::class, 'show']);
-Route::put('/users/{user}', [UserController::class, 'update']);
 
-//Carreiras
-Route::get('/careers', [CareerController::class, 'index']);
-Route::post('/careers', [CareerController::class, 'store']);
 
-//Matérias
-Route::get('/subjects', [SubjectController::class, 'index'])->name('subjects.index');
-Route::post('/subjects', [SubjectController::class, 'store'])->name('subjects.store');
 
 //Rotas UserCareer
 Route::prefix('user-career')->group(function () {
