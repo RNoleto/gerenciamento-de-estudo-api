@@ -50,6 +50,24 @@ Route::middleware('firebase.auth')->group(function () {
     Route::get('/subjects', [SubjectController::class, 'index'])->name('subjects.index');
     Route::post('/subjects', [SubjectController::class, 'store'])->name('subjects.store');
 
+    // =======================================
+    // 3. ROTAS PARA USUÁRIOS RECORRENTES
+    // =======================================
+    //ROTAS USER-CAREER
+    Route::prefix('user-career')->group(function () {
+        Route::get('/', [UserCareerController::class, 'index']);
+        Route::post('/', [UserCareerController::class, 'store']);
+        Route::delete('/{id}', [UserCareerController::class, 'destroy']);
+        Route::get('/{userId}', [UserCareerController::class, 'getUserCareer']);
+        Route::get('/career_name/{user_id}', [UserCareerController::class, 'getCareerByUser']);
+    });
+    //ROTAS USER-SUBJECTS
+    Route::prefix('user-subjects')->group(function () {
+        Route::post('/', [UserSubjectController::class, 'store']);
+        Route::get('/{userId}', [UserSubjectController::class, 'index']);
+        Route::patch('/deactivate', [UserSubjectController::class, 'deactivate']);
+    });
+
 });
 Route::get('/user/{firebaseUid}', [UserController::class, 'getUserByFirebaseUid']);
 
@@ -65,21 +83,6 @@ Route::post('/users/sync-on-register', [UserController::class, 'syncOnRegister']
 
 
 
-
-//Rotas UserCareer
-Route::prefix('user-career')->group(function () {
-    Route::get('/', [UserCareerController::class, 'index']);
-    Route::post('/', [UserCareerController::class, 'store']);
-    Route::delete('/{id}', [UserCareerController::class, 'destroy']);
-    Route::get('/{userId}', [UserCareerController::class, 'getUserCareer']);
-    Route::get('/career_name/{user_id}', [UserCareerController::class, 'getCareerByUser']);
-});
-
-Route::prefix('user-subjects')->group(function () {
-    Route::post('/', [UserSubjectController::class, 'store']);
-    Route::get('/{userId}', [UserSubjectController::class, 'index']);
-    Route::patch('/deactivate', [UserSubjectController::class, 'deactivate']);
-});
 
 Route::prefix('user-study-records')->group(function () {
     Route::get('/', [UserStudyRecordController::class, 'index'])->name('user-study-records.index');
