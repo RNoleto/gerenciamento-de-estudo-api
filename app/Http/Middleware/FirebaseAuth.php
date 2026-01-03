@@ -39,9 +39,11 @@ class FirebaseAuth
             return $next($request);
         
         } catch (\Throwable $e) {
-            // Log para você conferir no Vercel Logs o que exatamente falhou
-            \Log::error("Erro Firebase Auth: " . $e->getMessage());
-            return response()->json(['error' => 'Falha na autenticação', 'debug' => $e->getMessage()], 401);
+                return response()->json([
+            'error' => 'Falha na autenticação',
+            'message' => $e->getMessage(),
+            'trace' => $e->getTraceAsString() 
+        ], 401);
+            }
         }
-    }
 }
