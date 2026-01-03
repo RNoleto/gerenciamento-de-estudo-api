@@ -13,9 +13,21 @@ class FirebaseAuth
 {
     public function handle(Request $request, Closure $next)
     {
+        // 1. Tenta o método padrão
         $idToken = $request->bearerToken();
+        
+        // 2. Se falhar, busca diretamente nos headers do Apache/Nginx/Vercel
+        if (!$idToken) {
+            $authorizationHeader = $request->header('Authorization') ?: $request->server('HTTP_AUTHORIZATION');
+            
+            if ($authorizationHeader && preg_match('/Bearer\s+(.*)$/i', $authorizationHeader, $matches)) {
+                $idToken = $matches[1];
+            }
+        }
     
         if (!$idToken) {
+            // Log para debug no painel da Vercel se continuar falhando
+            \Log::error('Cabeçalhos recebidos na Vercel:', $request->headers->all());
             return response()->json(['error' => 'Token não fornecido'], 401);
         }
     
