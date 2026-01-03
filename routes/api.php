@@ -27,11 +27,7 @@ use Stripe\Checkout\Session;
 // });
 
 //Rotas protegidas pelo Firebase Auth
-Route::middleware('firebase.auth')->group(function () {
-    Route::get('/user', function (Request $request) {
-        return response()->json(['uid' => $request->attributes->get('firebase_uid')]);
-    });
-
+Route::middleware(['firebase.auth'])->group(function () {
     // =======================================
     // 1. ROTAS DE ADMINISTRAÇÃO DE USUÁRIOS
     // =======================================
@@ -41,7 +37,22 @@ Route::middleware('firebase.auth')->group(function () {
     Route::put('/users/{user}', [UserController::class, 'update']);
 
     // =======================================
-    // 2. ROTAS DE USO GERAL USUÁRIOS
+    // 2. ROTAS DE DASHBOARD ADMIN
+    // =======================================
+    Route::middleware(['admin'])->group(function () {
+        Route::get('/user', function (Request $request) {
+            return response()->json(['uid' => $request->attributes->get('firebase_uid')]);
+        });
+        // Rotas que apenas ADMINS acessam (dentro do grupo auth)
+        Route::prefix('admin')->group(function () {
+            Route::get('/stats', [DashboardController::class, 'getStats']);
+            Route::get('/charts/study-sessions', [DashboardController::class, 'getStudySessionsChartData']);
+            Route::get('/charts/career-distribution', [DashboardController::class, 'getCareerDistributionChartData']);
+        });
+    });
+    
+    // =======================================
+    // 3. ROTAS DE USO GERAL USUÁRIOS
     // =======================================
     // CARREIRAS
     Route::get('/careers', [CareerController::class, 'index']);
@@ -49,11 +60,7 @@ Route::middleware('firebase.auth')->group(function () {
     // MATÉRIAS
     Route::get('/subjects', [SubjectController::class, 'index'])->name('subjects.index');
     Route::post('/subjects', [SubjectController::class, 'store'])->name('subjects.store');
-
-    // =======================================
-    // 3. ROTAS PARA USUÁRIOS RECORRENTES
-    // =======================================
-    //ROTAS USER-CAREER
+    //ROTAS USERCAREER
     Route::prefix('user-career')->group(function () {
         Route::get('/', [UserCareerController::class, 'index']);
         Route::post('/', [UserCareerController::class, 'store']);
@@ -61,41 +68,33 @@ Route::middleware('firebase.auth')->group(function () {
         Route::get('/{userId}', [UserCareerController::class, 'getUserCareer']);
         Route::get('/career_name/{user_id}', [UserCareerController::class, 'getCareerByUser']);
     });
-    //ROTAS USER-SUBJECTS
+    // ROTAS USERSUBJECT
     Route::prefix('user-subjects')->group(function () {
         Route::post('/', [UserSubjectController::class, 'store']);
         Route::get('/{userId}', [UserSubjectController::class, 'index']);
         Route::patch('/deactivate', [UserSubjectController::class, 'deactivate']);
     });
-
+    // ROTAS USER STUDY RECORD
+    Route::prefix('user-study-records')->group(function () {
+        Route::get('/', [UserStudyRecordController::class, 'index'])->name('user-study-records.index');
+        Route::post('/', [UserStudyRecordController::class, 'store'])->name('user-study-records.store');
+        Route::get('/user/{userId}', [UserStudyRecordController::class, 'getUserRecords'])->name('user-study-records.getUserRecords');
+        Route::get('/{userStudyRecord}', [UserStudyRecordController::class, 'show'])->name('user-study-records.show');
+        Route::put('/{userStudyRecord}', [UserStudyRecordController::class, 'update'])->name('user-study-records.update');
+        Route::delete('/{userStudyRecord}', [UserStudyRecordController::class, 'destroy'])->name('user-study-records.destroy');
+    });
+    // ROTAS CRONOGRAMA DE ESTUDOS
+    Route::get('/schedule/{userId}', [ScheduleController::class, 'getSchedule']);
+    Route::post('/schedule', [ScheduleController::class, 'saveSchedule']);
 });
+
 Route::get('/user/{firebaseUid}', [UserController::class, 'getUserByFirebaseUid']);
-
-//Rotas Administrativas, futuramente proteger com middleware de admin
-Route::prefix('admin')->group(function () {
-    Route::get('/stats', [DashboardController::class, 'getStats']);
-    Route::get('/charts/study-sessions', [DashboardController::class, 'getStudySessionsChartData']);
-    Route::get('/charts/career-distribution', [DashboardController::class, 'getCareerDistributionChartData']);
-});
 
 // Rota para sincronizar usuário no banco de dados local/neon após o registro no Firebase
 Route::post('/users/sync-on-register', [UserController::class, 'syncOnRegister'])->middleware('firebase.auth');
 
 
 
-
-Route::prefix('user-study-records')->group(function () {
-    Route::get('/', [UserStudyRecordController::class, 'index'])->name('user-study-records.index');
-    Route::post('/', [UserStudyRecordController::class, 'store'])->name('user-study-records.store');
-    Route::get('/user/{userId}', [UserStudyRecordController::class, 'getUserRecords'])->name('user-study-records.getUserRecords');
-    Route::get('/{userStudyRecord}', [UserStudyRecordController::class, 'show'])->name('user-study-records.show');
-    Route::put('/{userStudyRecord}', [UserStudyRecordController::class, 'update'])->name('user-study-records.update');
-    Route::delete('/{userStudyRecord}', [UserStudyRecordController::class, 'destroy'])->name('user-study-records.destroy');
-});
-
-//cronograma
-Route::get('/schedule/{userId}', [ScheduleController::class, 'getSchedule']);
-Route::post('/schedule', [ScheduleController::class, 'saveSchedule']);
 
 //Progresso Diário --> usado junto com o Cronograma
 Route::get('/progress/{userId}', [DailyProgressController::class, 'getProgressForDate']);
@@ -122,13 +121,13 @@ Route::post('/progress/sync', [DailyProgressController::class, 'syncProgress']);
 
 
 // Rotas para o fluxo de pagamento com Stripe
-Route::post('/stripe/create-checkout', [PaymentController::class, 'createCheckoutSession']);
-Route::get('/stripe/confirm-subscription', [PaymentController::class, 'confirmSubscription']);
-Route::post('/stripe/webhook', [PaymentController::class, 'confirmSubscription']);
-Route::post('/webhook', [PaymentController::class, 'handleWebhook']);
-Route::post('/stripe/webhook', [PaymentController::class, 'handleWebhook']);
-Route::get('/stripe/confirm', [PaymentController::class, 'confirmRedirect']);
-Route::post('/update-clerk-metadata', [PaymentController::class, 'updateUserMetadata']);
+// Route::post('/stripe/create-checkout', [PaymentController::class, 'createCheckoutSession']);
+// Route::get('/stripe/confirm-subscription', [PaymentController::class, 'confirmSubscription']);
+// Route::post('/stripe/webhook', [PaymentController::class, 'confirmSubscription']);
+// Route::post('/webhook', [PaymentController::class, 'handleWebhook']);
+// Route::post('/stripe/webhook', [PaymentController::class, 'handleWebhook']);
+// Route::get('/stripe/confirm', [PaymentController::class, 'confirmRedirect']);
+// Route::post('/update-clerk-metadata', [PaymentController::class, 'updateUserMetadata']);
 
 //Rotas para pagamento com abacatepay
 Route::post('/checkout/abacatepay', [CheckoutController::class, 'createAbacateCheckout']);

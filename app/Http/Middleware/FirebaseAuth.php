@@ -6,32 +6,37 @@ use Closure;
 use Illuminate\Http\Request;
 use Kreait\Firebase\Factory;
 use Kreait\Auth\Token\Exception\InvalidToken;
+use Illuminate\Support\Facades\Auth; // Importante para autenticar no Laravel
+use App\Models\User; // Importante para buscar o usuário no banco
 
 class FirebaseAuth
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next)
     {
         $idToken = $request->bearerToken();
 
-        if(!$idToken){
+        if (!$idToken) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
         try {
             $factory = (new Factory)->withServiceAccount(config('firebase.credentials'));
-            
             $auth = $factory->createAuth();
         
             $verifiedIdToken = $auth->verifyIdToken($idToken);
-            $firebaseUid = $verifiedIdToken->claims()->get('sub'); // UID do usuário
-        
+            $firebaseUid = $verifiedIdToken->claims()->get('sub');
             $email = $verifiedIdToken->claims()->get('email');
-        
+
+            // BUSCA O USUÁRIO NO BANCO DE DADOS LOCAL
+            $user = User::where('firebase_uid', $firebaseUid)->first();
+
+            if (!$user) {
+                return response()->json(['error' => 'Usuário não encontrado no sistema local.'], 404);
+            }
+
+            // AUTENTICA O USUÁRIO NO LARAVEL
+            Auth::login($user);
+
             $request->attributes->add([
                 'firebase_uid' => $firebaseUid,
                 'firebase_email' => $email,

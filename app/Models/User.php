@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
         'clerk_id',
         'firebase_uid',
         'clerkfire_id',
@@ -56,5 +57,11 @@ class User extends Authenticatable
     public function userCareer()
     {
         return $this->hasOne(UserCareer::class, 'user_id', 'firebase_uid');
+    }
+
+    // Método para verificar se o usuário é admin
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
     }
 }

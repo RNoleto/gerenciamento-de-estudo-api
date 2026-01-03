@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
 
     protected $routeMiddleware = [
         'firebase.auth' => \App\Http\Middleware\FirebaseAuth::class,
+        'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
     ];
 }
