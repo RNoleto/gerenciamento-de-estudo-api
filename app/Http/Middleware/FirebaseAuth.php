@@ -6,17 +6,15 @@ use Closure;
 use Illuminate\Http\Request;
 use Kreait\Firebase\Factory;
 use Kreait\Auth\Token\Exception\InvalidToken;
-use Illuminate\Support\Facades\Auth; // Importante para autenticar no Laravel
-use App\Models\User; // Importante para buscar o usuário no banco
+use Illuminate\Support\Facades\Auth; 
+use App\Models\User;
 
 class FirebaseAuth
 {
     public function handle(Request $request, Closure $next)
     {
-        // 1. Tenta o método padrão
         $idToken = $request->bearerToken();
         
-        // 2. Se falhar, busca diretamente nos headers do Apache/Nginx/Vercel
         if (!$idToken) {
             $authorizationHeader = $request->header('Authorization') ?: $request->server('HTTP_AUTHORIZATION');
             
@@ -32,24 +30,27 @@ class FirebaseAuth
         }
     
         try {
-            // Certifique-se que o path em config/firebase.php aponta para o lugar certo em produção
             $factory = (new Factory)->withServiceAccount(config('firebase.credentials'));
             $auth = $factory->createAuth();
             $verifiedIdToken = $auth->verifyIdToken($idToken);
-            
             $firebaseUid = $verifiedIdToken->claims()->get('sub');
-        
+            
+            $request->attributes->add(['firebase_uid' => $firebaseUid]);
+            
             $user = \App\Models\User::where('firebase_uid', $firebaseUid)->first();
-        
+            
             if (!$user) {
-                // Em produção, se o usuário não existe no banco local, ele não está autorizado
-                return response()->json(['error' => 'Usuário não sincronizado no banco de dados'], 401);
+                // Se for a rota de sincronização, permite passar para o Controller criar o registro
+                if ($request->is('*users/sync-on-register')) {
+                    return $next($request);
+                }
+                
+                return response()->json(['error' => 'Usuário não sincronizado'], 401);
             }
         
             \Illuminate\Support\Facades\Auth::login($user);
-        
             return $next($request);
-        
+
         } catch (\Throwable $e) {
                 return response()->json([
             'error' => 'Falha na autenticação',

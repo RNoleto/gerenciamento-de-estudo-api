@@ -35,6 +35,7 @@ Route::middleware(['firebase.auth'])->group(function () {
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
     Route::get('/users/{user}', [UserController::class, 'show']);
     Route::put('/users/{user}', [UserController::class, 'update']);
+    Route::post('/users/sync-on-register', [UserController::class, 'syncOnRegister']);
 
     // =======================================
     // 2. ROTAS DE DASHBOARD ADMIN
@@ -89,12 +90,6 @@ Route::middleware(['firebase.auth'])->group(function () {
 });
 
 Route::get('/user/{firebaseUid}', [UserController::class, 'getUserByFirebaseUid']);
-
-// Rota para sincronizar usuário no banco de dados local/neon após o registro no Firebase
-Route::post('/users/sync-on-register', [UserController::class, 'syncOnRegister'])->middleware('firebase.auth');
-
-
-
 
 //Progresso Diário --> usado junto com o Cronograma
 Route::get('/progress/{userId}', [DailyProgressController::class, 'getProgressForDate']);
