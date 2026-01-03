@@ -14,41 +14,34 @@ class FirebaseAuth
     public function handle(Request $request, Closure $next)
     {
         $idToken = $request->bearerToken();
-
+    
         if (!$idToken) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Token não fornecido'], 401);
         }
-
+    
         try {
+            // Certifique-se que o path em config/firebase.php aponta para o lugar certo em produção
             $factory = (new Factory)->withServiceAccount(config('firebase.credentials'));
             $auth = $factory->createAuth();
-        
             $verifiedIdToken = $auth->verifyIdToken($idToken);
+            
             $firebaseUid = $verifiedIdToken->claims()->get('sub');
-            $email = $verifiedIdToken->claims()->get('email');
-
-            // BUSCA O USUÁRIO NO BANCO DE DADOS LOCAL
-            $user = User::where('firebase_uid', $firebaseUid)->first();
-
-            if (!$user) {
-                return response()->json(['error' => 'Usuário não encontrado no sistema local.'], 404);
-            }
-
-            // AUTENTICA O USUÁRIO NO LARAVEL
-            Auth::login($user);
-
-            $request->attributes->add([
-                'firebase_uid' => $firebaseUid,
-                'firebase_email' => $email,
-            ]);
         
-        } catch (InvalidToken $e) {
-            return response()->json(['error' => 'Token inválido'], 401);
+            $user = \App\Models\User::where('firebase_uid', $firebaseUid)->first();
+        
+            if (!$user) {
+                // Em produção, se o usuário não existe no banco local, ele não está autorizado
+                return response()->json(['error' => 'Usuário não sincronizado no banco de dados'], 401);
+            }
+        
+            \Illuminate\Support\Facades\Auth::login($user);
+        
+            return $next($request);
+        
         } catch (\Throwable $e) {
-            \Log::error($e);
-            return response()->json(['error' => 'Erro ao validar token', 'details' => $e->getMessage()], 500);
+            // Log para você conferir no Vercel Logs o que exatamente falhou
+            \Log::error("Erro Firebase Auth: " . $e->getMessage());
+            return response()->json(['error' => 'Falha na autenticação', 'debug' => $e->getMessage()], 401);
         }
-
-        return $next($request);
     }
 }
